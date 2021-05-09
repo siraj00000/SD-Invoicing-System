@@ -8,6 +8,7 @@ import { StyleSheet, View, TextInput, Dimensions, StatusBar, ScrollView, Text, T
 import { color2, color1 } from '../../Themes/Color';
 import { getAllCustomers } from '../../SqliteDatabase/Customer';
 import { ScreenHeader } from '../../Component/Header';
+import { STYLE } from '../../Utils/Stylesheet/Style';
 
 
 export default function ViewCustomers({ navigation, route }) {
@@ -24,25 +25,25 @@ export default function ViewCustomers({ navigation, route }) {
 
     let listItemView = (item) => {
         return (
-                <View key={item.customer_id} style={styles.tr}>
-                        <Text style={styles.th}>{item.customer_name}</Text>
-                        <Text style={styles.th}>{item.shop_name}</Text>
-                        <Text style={styles.th1}>{item.shop_address}</Text>
-                        <Text style={styles.th1}>{item.phone_number}</Text>            
-                </View>
+            <View key={item.customer_id} style={styles.tr}>
+                <Text style={styles.th}>{item.customer_name}</Text>
+                <Text style={styles.th}>{item.shop_name}</Text>
+                <Text style={styles.th1}>{item.shop_address}</Text>
+                <Text style={styles.th1}>{item.phone_number}</Text>
+            </View>
         );
     };
 
     return (
-        <View style={styles.section}>
+        <View style={STYLE.section}>
             <StatusBar size='auto' />
-            <ScreenHeader 
-                Title={route.name} 
-                icon={'remove-red-eye'} 
-                Iconbar={MaterialIcons} 
+            <ScreenHeader
+                Title={route.name}
+                icon={'remove-red-eye'}
+                Iconbar={MaterialIcons}
                 size={40}
-                navigation={navigation} 
-                />             
+                navigation={navigation}
+            />
             <View style={styles.tableContainer}>
                 <View style={styles.tr1}>
                     <Text style={styles.th2} >Name</Text>
@@ -62,11 +63,5 @@ export default function ViewCustomers({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-    section: {
-        flex: 1,
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-        resizeMode: 'cover',
-        backgroundColor: color1
-    },
+    table: {}
 })

@@ -8,6 +8,7 @@ import { StyleSheet, View, TextInput, Dimensions, StatusBar, ScrollView, Text, T
 import { color2, color1 } from '../../Themes/Color';
 import { getAllProducts } from '../../SqliteDatabase/Product';
 import { ScreenHeader } from '../../Component/Header';
+import { STYLE } from '../../Utils/Stylesheet/Style';
 
 export default function ViewProduct({ navigation, route }) {
     let [flatListItems, setFlatListItems] = useState([]);
@@ -47,7 +48,7 @@ export default function ViewProduct({ navigation, route }) {
     };
 
     return (
-        <View style={styles.section}>
+        <View style={STYLE.section}>
             <StatusBar size='auto' />
             <ScreenHeader 
                 Title={route.name} 
@@ -69,69 +70,6 @@ export default function ViewProduct({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-    section: {
-        flex: 1,
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-        resizeMode: 'cover',
-        backgroundColor: color1
-    },
-    body: {
-        paddingVertical: 20,
-    },
-    cr_product: {
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row',
-        marginVertical: 20,
-        paddingRight: 10,
-    },
-    icon: {
-        width: '20%',
-        textAlign: 'center',
-    },
-    TextInput: {
-        width: '80%',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        borderWidth: 1,
-        borderTopRightRadius: 100,
-        borderBottomRightRadius: 100,
-        borderColor: color2,
-        color: color2,
-        fontFamily: 'Montserrat-Bold',
-    },
-    footer: {
-        flex: 1,
-        alignItems: 'center',
-        flexDirection: 'row',
-        height: 100,
-        paddingVertical: 10
-    },
-    btn: {
-        justifyContent: 'flex-end',
-        flexDirection: 'row-reverse',
-        alignItems: 'center',
-        width: Dimensions.get('window').width * .78,
-        height: 50,
-        backgroundColor: color2,
-        borderWidth: 1,
-        borderTopRightRadius: 100,
-        borderBottomRightRadius: 100,
-        borderColor: color2,
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-    },
-    btnTxt: {
-        color: color1,
-        fontSize: 20,
-        fontFamily: 'Montserrat-Bold',
-        textTransform: 'uppercase',
-    },
-    icon: {
-        marginLeft: 15,
-        width: Dimensions.get('window').width * .2,
-    },
     list: {
         flex: 1,
         paddingVertical: 40,

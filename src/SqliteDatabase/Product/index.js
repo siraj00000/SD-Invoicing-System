@@ -14,7 +14,7 @@ export const createTableForProduct = () => {
           console.log('Empty table');
           txn.executeSql('DROP TABLE IF EXISTS product', []);
           txn.executeSql(
-            'CREATE TABLE IF NOT EXISTS product(product_id INTEGER PRIMARY KEY AUTOINCREMENT, product_name VARCHAR(5), product_weight INT(3), unit_price INT(3), unit_cost INT(3))',
+            'CREATE TABLE IF NOT EXISTS product(product_id INTEGER PRIMARY KEY AUTOINCREMENT, product_name VARCHAR(5), product_weight INT(3), unit_price INT(3), unit_cost INT(3), quaintity INT(100))',
             []
           );
         }
@@ -25,7 +25,7 @@ export const createTableForProduct = () => {
 
 
 
-export const AddProduct = (productName, productWeight, productPrice, productCost, navigation) => {
+export const AddProduct = (productName, productWeight, productPrice, productCost, quaintity, navigation) => {
 
   if (!productName) {
     alert('Please fill product name');
@@ -43,11 +43,15 @@ export const AddProduct = (productName, productWeight, productPrice, productCost
     alert('Please fill unit cost');
     return;
   }
+  if (!quaintity) {
+    alert('Please fill unit cost');
+    return;
+  }
 
   db.transaction(function (tx) {
     tx.executeSql(
-      'INSERT INTO product (product_name, product_weight, unit_price, unit_cost) VALUES (?,?,?,?)',
-      [productName, productWeight, productPrice, productCost],
+      'INSERT INTO product (product_name, product_weight, unit_price, unit_cost, quaintity) VALUES (?,?,?,?,?)',
+      [productName, productWeight, productPrice, productCost, quaintity],
       (tx, results) => {
         console.log('Results', results.rowsAffected);
         if (results.rowsAffected > 0) {

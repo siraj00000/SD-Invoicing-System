@@ -1,0 +1,34 @@
+Setting (Default)
+    > Currency 
+        . Currency Name
+        . Currency Symbol
+        . Symbol Location
+    
+    > VAT 
+        . VAT Name ----> 5 Percent ----> 15 %
+        . VAT percentage    5 ----> 15
+    
+Products 
+    . Company Name
+    . Contact Person
+    . Address
+    . Tel
+    . VAT Number
+    . CR Number
+
+200 x 5 = 1000 x 15/100 = 150
+
+Customers
+    . Name
+    . Company 
+    . Address
+    . Text Registration Number
+
+VAT three fields 
+    . Tax Name
+    . Tax type (per, amount)
+    . Ratio (if per e.g 5%, else if amount 500PKR, $7)
+
+Currency 
+    . Currency Name
+    . Currency Sign

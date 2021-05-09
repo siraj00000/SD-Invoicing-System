@@ -10,6 +10,7 @@ import { StyleSheet, View, TextInput, Dimensions, StatusBar, Text, TouchableOpac
 import { color2, color1 } from '../../Themes/Color';
 import { Bold } from '../../Themes/FontFamily';
 import { ScreenHeader } from '../../Component/Header';
+import { STYLE } from '../../Utils/Stylesheet/Style';
 
 
 
@@ -121,7 +122,7 @@ export default function CreateInvoices({ navigation, route }) {
             setSelectedProducts(delteSelectedProduct);
         }
         return (
-            <View style={styles.cr_product}>
+            <View style={STYLE.cr_product}>
                 <View style={styles.TextInput}>
                     <Text style={styles.text}>{item}</Text>
                     <FontAwesome name='cut' size={20} color={color2}
@@ -132,7 +133,7 @@ export default function CreateInvoices({ navigation, route }) {
     }
 
     return (
-        <View style={styles.section}>
+        <View style={STYLE.section}>
             <StatusBar size='auto' />
             <ScreenHeader
                 Title={route.name}
@@ -141,15 +142,15 @@ export default function CreateInvoices({ navigation, route }) {
                 size={40}
                 navigation={navigation}
             />
-            <View style={styles.body}>
-                <TouchableOpacity activeOpacity={1} style={styles.cr_product} onPress={() => {
+            <View style={STYLE.body}>
+                <TouchableOpacity activeOpacity={1} style={STYLE.cr_product} onPress={() => {
                     setCustomerDropdown(!custumerDropdown); setProductDropdown(false)
                 }}>
-                    <Text style={styles.TextInput}>{addCustomer || 'Add Customer'}</Text>
+                    <Text style={STYLE.TextInput}>{addCustomer || 'Add Customer'}</Text>
                     {custumerDropdown ?
-                        <MaterialCommunityIcons name='chevron-up' style={styles.icon} color={color2} size={60} />
+                        <MaterialCommunityIcons name='chevron-up' style={STYLE.icon} color={color2} size={60} />
                         :
-                        <MaterialCommunityIcons name='chevron-down' style={styles.icon} color={color2} size={60} />
+                        <MaterialCommunityIcons name='chevron-down' style={STYLE.icon} color={color2} size={60} />
                     }
                 </TouchableOpacity>
                 {custumerDropdown && customers && <FlatList
@@ -158,14 +159,14 @@ export default function CreateInvoices({ navigation, route }) {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => customerList(item)}
                 />}
-                <TouchableOpacity activeOpacity={1} style={styles.cr_product} onPress={() => {
+                <TouchableOpacity activeOpacity={1} style={STYLE.cr_product} onPress={() => {
                     setProductDropdown(!productDropdown); setCustomerDropdown(false)
                 }}>
-                    <Text style={styles.TextInput}>Add Product</Text>
+                    <Text style={STYLE.TextInput}>Add Product</Text>
                     {productDropdown ?
-                        <MaterialCommunityIcons name='chevron-up' style={styles.icon} color={color2} size={60} />
+                        <MaterialCommunityIcons name='chevron-up' style={STYLE.icon} color={color2} size={60} />
                         :
-                        <MaterialCommunityIcons name='chevron-down' style={styles.icon} color={color2} size={60} />
+                        <MaterialCommunityIcons name='chevron-down' style={STYLE.icon} color={color2} size={60} />
                     }
                 </TouchableOpacity>
                 {productDropdown && products && <FlatList
@@ -180,9 +181,9 @@ export default function CreateInvoices({ navigation, route }) {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }, index) => selected(item, index)}
                 />}
-                <View style={styles.footer}>
-                    <TouchableOpacity style={styles.btn} onPress={addInvoice} >
-                        <Text style={styles.btnTxt}>Add</Text>
+                <View style={STYLE.footer}>
+                    <TouchableOpacity style={STYLE.btn} onPress={addInvoice} >
+                        <Text style={STYLE.btnTxt}>Add</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -191,17 +192,6 @@ export default function CreateInvoices({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-    section: {
-        flex: 1,
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-        resizeMode: 'cover',
-        backgroundColor: color1
-    },  
-    body: {
-        flex: 1,
-        paddingTop: 20,
-    },
     cr_product: {
         justifyContent: 'space-between',
         alignItems: 'center',

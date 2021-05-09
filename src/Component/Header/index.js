@@ -1,5 +1,4 @@
 import React from 'react';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet, Text, View } from 'react-native';
@@ -46,6 +45,7 @@ const styles = StyleSheet.create({
         backgroundColor: color2,
         borderBottomRightRadius: 50,
         borderBottomLeftRadius: 50,
+        marginBottom: 10
     },
     header: {
         height: 50,
