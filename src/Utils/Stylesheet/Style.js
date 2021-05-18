@@ -33,6 +33,10 @@ export const STYLE = StyleSheet.create({
         color: color2,
         fontFamily: Bold,
     },
+    text: {
+        color: color2,
+        fontFamily: Bold,
+    },
     footer: {
         flex: 1,
         alignItems: 'center',

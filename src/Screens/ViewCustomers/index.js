@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -9,6 +10,7 @@ import { color2, color1 } from '../../Themes/Color';
 import { getAllCustomers } from '../../SqliteDatabase/Customer';
 import { ScreenHeader } from '../../Component/Header';
 import { STYLE } from '../../Utils/Stylesheet/Style';
+import { Bold } from '../../Themes/FontFamily';
 
 
 export default function ViewCustomers({ navigation, route }) {
@@ -25,11 +27,35 @@ export default function ViewCustomers({ navigation, route }) {
 
     let listItemView = (item) => {
         return (
-            <View key={item.customer_id} style={styles.tr}>
-                <Text style={styles.th}>{item.customer_name}</Text>
-                <Text style={styles.th}>{item.shop_name}</Text>
-                <Text style={styles.th1}>{item.shop_address}</Text>
-                <Text style={styles.th1}>{item.phone_number}</Text>
+            <View key={item.customer_id} style={styles.row}>
+                <View style={styles.column}>
+                    <Ionicons name='person' color={color2} size={20} />
+                    <Text style={styles.text}>{`${item.contact_person} (${item.contact_person_arabic})`}</Text>
+                </View>
+                <View style={styles.column}>
+                    <Entypo name='shop' color={color2} size={20} />
+                    <Text style={styles.text}>{item.company_name}{` (${item.company_name_arabic})`}</Text>
+                </View>
+                <View style={styles.column}>
+                    <FontAwesome name='envelope' color={color2} size={20} />
+                    <Text style={styles.text}>{item.email}</Text>
+                </View>
+                <View style={styles.column}>
+                    <Entypo name='address' color={color2} size={20} />
+                    <Text style={styles.text}>{item.address}</Text>
+                </View>
+                <View style={styles.column}>
+                    <FontAwesome5 name='phone-alt' color={color2} size={20} />
+                    <Text style={styles.text}>{item.telephone_number}</Text>
+                </View>
+                <View style={styles.column}>
+                    <MaterialCommunityIcons name='finance' color={color2} size={20} />
+                    <Text style={styles.text}>{item.VAT_number}</Text>
+                </View>
+                <View style={styles.column}>
+                    <FontAwesome5 name='credit-card' color={color2} size={20} />
+                    <Text style={styles.text}>{item.CR_number}</Text>
+                </View>
             </View>
         );
     };
@@ -44,15 +70,8 @@ export default function ViewCustomers({ navigation, route }) {
                 size={40}
                 navigation={navigation}
             />
-            <View style={styles.tableContainer}>
-                <View style={styles.tr1}>
-                    <Text style={styles.th2} >Name</Text>
-                    <Text style={styles.th2} >Shop</Text>
-                    <Text style={styles.th3} >Address</Text>
-                    <Text style={styles.th3} >Phone</Text>
-                </View>
+            <View style={STYLE.body}>
                 <FlatList
-                    style={styles.table}
                     data={flatListItems}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => listItemView(item)}
@@ -63,5 +82,32 @@ export default function ViewCustomers({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-    table: {}
+    row: {
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        marginVertical: 10,
+        backgroundColor: color1,
+        borderWidth: 1,
+        borderColor: color2,
+        borderLeftWidth: 0,
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 100,
+    },
+    column: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '50%',
+    },
+    text: {
+        color: color2,
+        fontFamily: Bold,
+        marginLeft: 5,
+        margin: 5
+    }
+
 })
+

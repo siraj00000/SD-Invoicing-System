@@ -75,7 +75,8 @@ const stylePages = StyleSheet.create({
         height: 150,
         borderColor: '#fff',
         borderBottomRightRadius: 100,
-        backgroundColor: color2
+        backgroundColor: color2,
+        marginBottom: 10
     },
     header: {
         height: 50,

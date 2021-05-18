@@ -1,34 +1,39 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { DeshboardHeader } from '../../Component/Header'
 import { Pages } from '../../Component/Pages'
+import { createTableForCurrency, createTableForTax } from '../../SqliteDatabase/DefaultData';
 import { STYLE } from '../../Utils/Stylesheet/Style'
 
 export default function Settingoption({ navigation }) {
+    useEffect(() => {
+        createTableForCurrency();
+        createTableForTax();
+    }, []);
 
     return (
         <View style={STYLE.section}>
             <DeshboardHeader icon={'settings'} Title={'Setting'} />
-            <ScrollView style={STYLE.body} >                
+            <ScrollView style={STYLE.body} >
                 <View style={styles.settingOption}>
-                        <Pages
-                            routeName={'Currency'}
-                            Title={'Currency'}
-                            Iconbar={MaterialCommunityIcons}
-                            icon={'currency-usd-circle-outline'}
-                            size={40}
-                            nav={navigation}
-                        />
-                        <Pages
-                            routeName={'TAX'}
-                            Title={'TAX'}
-                            Iconbar={MaterialCommunityIcons}
-                            icon={'finance'}
-                            size={40}
-                            nav={navigation}
-                        />
-                    </View>
+                    <Pages
+                        routeName={'Currency'}
+                        Title={'Currency'}
+                        Iconbar={MaterialCommunityIcons}
+                        icon={'currency-usd-circle-outline'}
+                        size={40}
+                        nav={navigation}
+                    />
+                    <Pages
+                        routeName={'TAX'}
+                        Title={'TAX'}
+                        Iconbar={MaterialCommunityIcons}
+                        icon={'finance'}
+                        size={40}
+                        nav={navigation}
+                    />
+                </View>
             </ScrollView>
         </View>
     )
@@ -36,7 +41,7 @@ export default function Settingoption({ navigation }) {
 
 const styles = StyleSheet.create({
     settingOption: {
-        width: '100%',        
+        width: '100%',
         alignContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',

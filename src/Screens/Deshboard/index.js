@@ -1,23 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StyleSheet, View, Dimensions, StatusBar, ScrollView, Text, TouchableOpacity, } from 'react-native';
-import { color2, color1 } from '../../Themes/Color';
+import { StyleSheet, View, StatusBar, ScrollView, } from 'react-native';
 import { createTableForProduct } from '../../SqliteDatabase/Product';
 import { createTableForCustomer } from '../../SqliteDatabase/Customer';
-import { Bold } from '../../Themes/FontFamily';
 import { DeshboardHeader } from '../../Component/Header';
 import { Pages } from '../../Component/Pages';
 import { STYLE } from '../../Utils/Stylesheet/Style';
-import { createTableForDefaultData } from '../../SqliteDatabase/DefaultData';
 
 export default function Deshboard({ navigation }) {
     useEffect(() => {
         createTableForProduct();
         createTableForCustomer();
-        createTableForDefaultData();
     }, []);
     return (
         <View style={STYLE.section}>
@@ -35,7 +31,7 @@ export default function Deshboard({ navigation }) {
                         nav={navigation}
                     />
                     <Pages
-                        routeName={'Add Customer'}
+                        routeName={'Customer name'}
                         Title={'Add customers'}
                         Iconbar={Ionicons}
                         icon={'people-sharp'}

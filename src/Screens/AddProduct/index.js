@@ -14,10 +14,10 @@ export default function Addproduct({ navigation, route }) {
     const [productWeight, setProductWeight] = useState('');
     const [productPrice, setProductPrice] = useState('');
     const [productCost, setProductCost] = useState('');
-    const [quaintity, setQuaintity] = useState('');
+    const [quantity, setQuantity] = useState('');
 
     const addProduct = () => {
-        AddProduct(productName, productWeight, productPrice, productCost, quaintity, navigation);
+        AddProduct(productName, productWeight, productPrice, productCost, quantity, navigation);
     }
 
     return (
@@ -26,7 +26,7 @@ export default function Addproduct({ navigation, route }) {
             <ScreenHeader navigation={navigation} icon={'box-open'} Iconbar={FontAwesome5} size={30} Title={route.name} />
             <ScrollView style={STYLE.body}>
                 <View style={STYLE.cr_product}>
-                    <TextInput selectionColor={color1} placeholderTextColor={color2} placeholder='Product name' value={productName}
+                    <TextInput selectionColor={color2} placeholderTextColor={color2} placeholder='Product name' value={productName}
                         style={STYLE.TextInput} onChangeText={setProductName} />
                     <FontAwesome5 name='box-open' style={STYLE.icon} color={color2} size={30} />
                 </View>
@@ -36,9 +36,9 @@ export default function Addproduct({ navigation, route }) {
                     <MaterialCommunityIcons name='weight-kilogram' style={STYLE.icon} color={color2} size={40} />
                 </View>
                 <View style={STYLE.cr_product}>
-                    <TextInput keyboardType='number-pad' selectionColor={color2} placeholderTextColor={color2} placeholder='Quaintity' value={quaintity}
-                        style={STYLE.TextInput} onChangeText={setQuaintity} />
-                    <MaterialCommunityIcons name='weight-kilogram' style={STYLE.icon} color={color2} size={40} />
+                    <TextInput keyboardType='number-pad' selectionColor={color2} placeholderTextColor={color2} placeholder='quantity' value={quantity}
+                        style={STYLE.TextInput} onChangeText={setQuantity} />
+                    <FontAwesome5 name='boxes' style={STYLE.icon} color={color2} size={40} />
                 </View>
                 <View style={STYLE.cr_product}>
                     <TextInput keyboardType='number-pad' selectionColor={color2} placeholderTextColor={color2} placeholder='Unit price ($)' value={productPrice}

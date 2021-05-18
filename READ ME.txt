@@ -6,7 +6,7 @@ Setting (Default)
     
     > VAT 
         . VAT Name ----> 5 Percent ----> 15 %
-        . VAT percentage    5 ----> 15
+        . VAT percentage   5 ----> 15
     
 Products 
     . Company Name
@@ -32,3 +32,12 @@ VAT three fields
 Currency 
     . Currency Name
     . Currency Sign
+
+Customers 
+    . Company Name
+    . Contact Person
+    . Address
+    . Tel
+    . Email
+    . VAT Number
+    . CR Number

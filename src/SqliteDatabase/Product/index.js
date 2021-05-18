@@ -6,15 +6,15 @@ var db = openDatabase({ name: 'SDINVOICINGSYSTEM.db' });
 export const createTableForProduct = () => {
   db.transaction(function (txn) {
     txn.executeSql(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name='product'",
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='products'",
       [],
       function (tx, res) {
         console.log('item:', res.rows.length);
         if (res.rows.length == 0) {
           console.log('Empty table');
-          txn.executeSql('DROP TABLE IF EXISTS product', []);
+          txn.executeSql('DROP TABLE IF EXISTS products', []);
           txn.executeSql(
-            'CREATE TABLE IF NOT EXISTS product(product_id INTEGER PRIMARY KEY AUTOINCREMENT, product_name VARCHAR(5), product_weight INT(3), unit_price INT(3), unit_cost INT(3), quaintity INT(100))',
+            'CREATE TABLE IF NOT EXISTS products(product_id INTEGER PRIMARY KEY AUTOINCREMENT, product_name VARCHAR(5), product_weight INT(3), unit_price INT(3), unit_cost INT(3), quantity INT(10))',
             []
           );
         }
@@ -25,33 +25,20 @@ export const createTableForProduct = () => {
 
 
 
-export const AddProduct = (productName, productWeight, productPrice, productCost, quaintity, navigation) => {
-
-  if (!productName) {
-    alert('Please fill product name');
-    return;
-  }
-  if (!productWeight) {
-    alert('Please fill weigth');
-    return;
-  }
-  if (!productPrice) {
-    alert('Please fill unit price');
-    return;
-  }
-  if (!productCost) {
-    alert('Please fill unit cost');
-    return;
-  }
-  if (!quaintity) {
-    alert('Please fill unit cost');
-    return;
-  }
-
+export const AddProduct = (productName, productWeight, productPrice, productCost, quantity, navigation) => {
+  const obj = {
+    productName, productWeight, productPrice, productCost, quantity
+  };
+  for (var key in obj) {
+    if (obj[key] === '') {
+      Alert.alert(`${key} field is empty`);
+      return false;
+    }
+  };
   db.transaction(function (tx) {
     tx.executeSql(
-      'INSERT INTO product (product_name, product_weight, unit_price, unit_cost, quaintity) VALUES (?,?,?,?,?)',
-      [productName, productWeight, productPrice, productCost, quaintity],
+      'INSERT INTO products(product_name, product_weight, unit_price, unit_cost, quantity) VALUES (?,?,?,?,?)',
+      [productName, productWeight, productPrice, productCost, quantity],
       (tx, results) => {
         console.log('Results', results.rowsAffected);
         if (results.rowsAffected > 0) {
@@ -76,7 +63,7 @@ export const getAllProducts = () => {
   return new Promise((resolve) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT * FROM product',
+        'SELECT * FROM products',
         [],
         (tx, results) => {
           var temp = [];

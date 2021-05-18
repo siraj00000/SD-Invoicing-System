@@ -6,14 +6,14 @@ var db = openDatabase({ name: 'SDINVOICINGSYSTEM.db' });
 export const createTableForCustomer = () => {
   db.transaction(function (txn) {
     txn.executeSql(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name='customer'",
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='customer_table'",
       [],
       function (tx, res) {
         console.log('item:', res.rows.length);
         if (res.rows.length == 0) {
-          txn.executeSql('DROP TABLE IF EXISTS customer', []);
+          txn.executeSql('DROP TABLE IF EXISTS customer_table', []);
           txn.executeSql(
-            'CREATE TABLE IF NOT EXISTS customer(customer_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_name VARCHAR(20), shop_name VARCHAR(20), shop_address VARCHAR(255), phone_number INT(15))',
+            'CREATE TABLE IF NOT EXISTS customer_table(customer_id INTEGER PRIMARY KEY AUTOINCREMENT, contact_person VARCHAR(20), contact_person_arabic VARCHAR(20), company_name VARCHAR(20), company_name_arabic VARCHAR(20), email VARCHAR(25), address VARCHAR(255), telephone_number INT(15), VAT_number INT(10), CR_number INT(10) )',
             []
           );
         }
@@ -23,31 +23,23 @@ export const createTableForCustomer = () => {
 }
 
 
-export const AddCustomer = (customerName, shopName, shopAddress, phoneNumber, navigation) => {
-
-  if (!customerName) {
-    alert('Please fill customer name');
-    return;
+export const AddCustomer = (contactPerson, contactPersonArbic, companyName, companyNameArabic, email, address, telephoneNumber, VATNumber, CRNumber, navigation) => {
+  console.log('>>>>', contactPerson, contactPersonArbic, companyName, companyNameArabic, email, address, telephoneNumber, VATNumber, CRNumber);
+  const obj = {
+    contactPerson, contactPersonArbic, companyName, companyNameArabic, email, address, telephoneNumber, VATNumber, CRNumber
   }
-  if (!shopName) {
-    alert('Please fill shop name');
-    return;
+  for (var key in obj) {
+    if (obj[key] === '') {
+      Alert.alert(`${key} field is empty`);
+      return false;
+    }
   }
-  if (!shopAddress) {
-    alert('Please fill unit shop address');
-    return;
-  }
-  if (!phoneNumber) {
-    alert('Please fill phone number');
-    return;
-  }
-
   db.transaction(function (tx) {
     tx.executeSql(
-      'INSERT INTO customer (customer_name, shop_name, shop_address, phone_number) VALUES (?,?,?,?)',
-      [customerName, shopName, shopAddress, phoneNumber],
+      'INSERT INTO customer_table (contact_person, contact_person_arabic, company_name, company_name_arabic, email, address, telephone_number, VAT_number, CR_number) VALUES (?,?,?,?,?,?,?,?,?)',
+      [contactPerson, contactPersonArbic, companyName, companyNameArabic, email, address, telephoneNumber, VATNumber, CRNumber],
       (tx, results) => {
-        console.log('Results', results.rowsAffected);
+        console.log('customer_table>', results.rowsAffected);
         if (results.rowsAffected > 0) {
           Alert.alert(
             'Success',
@@ -71,7 +63,7 @@ export const getAllCustomers = () => {
   return new Promise((resolve) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT * FROM customer',
+        'SELECT * FROM customer_table',
         [],
         (tx, results) => {
           var temp = [];

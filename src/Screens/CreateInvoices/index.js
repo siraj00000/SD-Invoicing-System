@@ -1,140 +1,169 @@
 import React, { useEffect, useState } from 'react'
-import { getAllCustomers } from '../../SqliteDatabase/Customer'
+import { getAllCustomers } from '../../SqliteDatabase/Customer/index'
 import { getAllProducts } from '../../SqliteDatabase/Product'
-import { productFactTable, getLastRowId, createFactTableForProduct, createTableForInvoices, AddInvoiceToSqlite, customerIdForCheck } from '../../SqliteDatabase/Invoices'
+// import { productFactTable, getLastRowId, createFactTableForProduct, createTableForInvoices, AddInvoiceToSqlite, customerIdForCheck } from '../../SqliteDatabase/Invoices'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { StyleSheet, View, TextInput, Dimensions, StatusBar, Text, TouchableOpacity, FlatList, SectionList, ScrollView, Alert } from 'react-native'
+import {
+    StyleSheet,
+    View,
+    Alert,
+    Text,
+    TouchableOpacity,
+    FlatList,
+    Pressable
+} from 'react-native'
 import { color2, color1 } from '../../Themes/Color';
 import { Bold } from '../../Themes/FontFamily';
 import { ScreenHeader } from '../../Component/Header';
 import { STYLE } from '../../Utils/Stylesheet/Style';
+import ItemChanges from '../../Utils/modal';
 
-
-
-export default function CreateInvoices({ navigation, route }) {
-    const [customers, setCustomers] = useState();
-    const [products, setProducts] = useState();
-    const [custumerDropdown, setCustomerDropdown] = useState(false);
+export default function AddInvoices({ navigation, route }) {
+    const [customer, setCustomer] = useState('');
+    const [products, setProducts] = useState('');
+    const [customerDropdown, setcustomerDropdown] = useState(false);
     const [productDropdown, setProductDropdown] = useState(false);
-    const [addCustomer, setAddCustomer] = useState('');
-    const [selectedCustomerId, setSelectedCustomerId] = useState();
+    const [customerName, setCustomerName] = useState('');
     const [selectedProducts, setSelectedProducts] = useState([]);
-    const [isNotExist, setIsNotExist] = useState('no');
+    const [customerInfo, setCustomerInfo] = useState([]);
+    const [itemList, setItemList] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+    const [modalIndex, setModalIndex] = useState('');
 
     useEffect(() => {
-        getAllCustomer();
-        getAllProduct();
-        createTableForInvoices();
-        createFactTableForProduct();
+        getAllCustomerAndProductsFromDb();
     }, []);
-
-    const getAllCustomer = async () => {
-        const customer = await getAllCustomers();
-        setCustomers(customer);
+    const getAllCustomerAndProductsFromDb = async () => {
+        const customers = await getAllCustomers();
+        const products = await getAllProducts();
+        setCustomer(customers);
+        setProducts(products);
     }
-
-    const getAllProduct = async () => {
-        const product = await getAllProducts();
-        setProducts(product);
-    }
-
-    const newCustomer = async (id) => {
-        const rId = await getLastRowId();
-        AddInvoiceToSqlite(addCustomer, id);
-        for (var i = 0; i <= selectedProducts.length - 1; i++) {
-            productFactTable(selectedProducts[i], rId[0], id, navigation);
-        }
-    }
-
-    const val = (id1, id2) => { return id1 == id2 }
-    const checkExistsCustumerId = async (id, rId) => {
-        const checkCustomerId = await customerIdForCheck();
-        if (checkCustomerId.length) {
-            const check = checkCustomerId.some((i) => val(i.customerId, id))
-            if (check) {
-                for (var i = 0; i <= selectedProducts.length - 1; i++) {
-                    productFactTable(selectedProducts[i], rId[0], id, navigation);
-                    setIsNotExist('yes')
-                }
-            } else if (!check) {
-                newCustomer(id)
-            }
-        } else if (!checkCustomerId.lenght) {
-            AddInvoiceToSqlite(addCustomer, id);
-            for (var i = 0; i <= selectedProducts.length - 1; i++) {
-                productFactTable(selectedProducts[i], 1, id, navigation);
-            }
-        }
-    }
-
-    const addInvoice = async () => {
-        const rId = await getLastRowId();
-        checkExistsCustumerId(selectedCustomerId, rId)
-        if (isNotExist == false) {
-            console.log('running....');
-            // newCustomer(rId, selectedCustomerId)
-        }
-    }
-
     const customerList = (item) => {
+        const customerInfoList = [];
         return (
-            <View
-                key={item.customer_id}
-                style={styles.customerContainer}>
+            <Pressable style={styles.customerContainer} onPress={() => {
+                customerInfoList.push({
+                    contactPerson: item.contact_person,
+                    contactPersonArabic: item.contact_person_arabic,
+                    companyName: item.company_name,
+                    companyNameArabic: item.company_name_arabic,
+                    email: item.email,
+                    address: item.address,
+                    tele: item.telephone_number,
+                    VAT: item.VAT_number,
+                    CR: item.CR_number,
+                    id: item.customer_id
+                })
+                setCustomerInfo(customerInfoList);
+                setCustomerName(`${item.contact_person} (${item.contact_person_arabic})`);
+            }}
+            >
                 <Ionicons name='person' size={20} color={color2} />
-                <Text style={styles.customerName} onPress={() => {
-                    setAddCustomer(item.customer_name);
-                    setSelectedCustomerId(item.customer_id);
-                    setCustomerDropdown(false);
-                }}>
-                    {item.customer_name}
+                <Text style={styles.customerName}>
+                    {item.contact_person} ({item.contact_person_arabic})
                 </Text>
-            </View>
-        );
-    };
-    const productList = (item) => {
-        const product = [...selectedProducts]
+            </Pressable>
+        )
+    }
+    const productList = (item, index) => {
+        const product = [...selectedProducts];
         return (
-            <View
-                key={item.product_id}
-                style={styles.customerContainer}>
-                {!products && <Text style={styles.customerName}>NO Product</Text>}
+            <View style={styles.customerContainer}>
                 <FontAwesome5 name='box-open' size={20} color={color2} />
-                <Text style={styles.customerName} onPress={() => {
-                    product.push(item.product_name);
+                <Pressable style={styles.customerName} onPress={() => {
+                    product.push({
+                        id: item.product_id,
+                        name: item.product_name,
+                        quantity: item.quaintity,
+                        price: item.unit_price,
+                        priceOld: item.unit_price,
+                        weight: item.product_weight,
+                        weightOld: item.product_weight,
+                        total: item.unit_price * item.quaintity,
+                        productIndex: index,
+                    });
                     setSelectedProducts(product);
                     setProductDropdown(false);
                 }}>
-                    {item.product_name}
-                </Text>
+                    <Text style={STYLE.text}>
+                        {item.product_name}
+                    </Text>
+                    <Text style={STYLE.text}>
+                        {`$ ${item.unit_price}  ${item.product_weight}kg`}
+                    </Text>
+                </Pressable>
             </View>
-        );
-    };
-
-
+        )
+    }
     const selected = (item, index) => {
         const Delete = () => {
             const delteSelectedProduct = [...selectedProducts]
             delteSelectedProduct.splice(index, 1);
             setSelectedProducts(delteSelectedProduct);
         }
+        const onModalClose = (val) => {
+            setOpenModal(val);
+        }
+        const addChangesValue = (item) => {
+            const delteSelectedProduct = [...selectedProducts];
+            delteSelectedProduct.splice(index, -1);
+            delteSelectedProduct[index] = item;
+            setSelectedProducts(delteSelectedProduct);
+        };
         return (
-            <View style={STYLE.cr_product}>
-                <View style={styles.TextInput}>
-                    <Text style={styles.text}>{item}</Text>
-                    <FontAwesome name='cut' size={20} color={color2}
-                        style={styles.icon} onPress={Delete} />
-                </View>
+            <View style={styles.list}>
+                <Pressable style={styles.selectedProducts}
+                    onPress={() => {
+                        setItemList(!itemList);
+                        setIndexNumber(item.id);
+                    }}
+                >
+                    <FontAwesome5
+                        name='dot-circle'
+                        size={20}
+                        color={color2}
+                    />
+                    <View style={styles.listItem}>
+                        <Text style={styles.text}>{item.name}</Text>
+                        <Text style={styles.text}>${item.price}</Text>
+                    </View>
+                </Pressable>
+                <Pressable style={styles.button}>
+                    <Pressable style={styles.btn}>
+                        <MaterialCommunityIcons name='delete-forever' size={20} color={color1} onPress={Delete} />
+                    </Pressable>
+                    <Pressable style={styles.btn} onPress={() => { setOpenModal(true); setModalIndex(index) }}>
+                        <Text style={[STYLE.text, { color: color1 }]}>Detail</Text>
+                    </Pressable>
+                </Pressable>
+                {
+                    openModal && index == modalIndex &&
+                    <ItemChanges
+                        open={openModal}
+                        onModalClose={onModalClose}
+                        item={selectedProducts[index]}
+                        addChangesValue={addChangesValue}
+                    />
+                }
             </View>
         )
     }
-
+    const next = async () => {
+        if(customerInfo.length && selectedProducts.length){
+            navigation.navigate('Add Invoices', {
+                customer: customerInfo,
+                products: selectedProducts
+            })
+        }else{
+            Alert.alert('Make sure all fields are filled');
+        }
+    }
     return (
         <View style={STYLE.section}>
-            <StatusBar size='auto' />
             <ScreenHeader
                 Title={route.name}
                 icon={'file-document-edit'}
@@ -143,84 +172,59 @@ export default function CreateInvoices({ navigation, route }) {
                 navigation={navigation}
             />
             <View style={STYLE.body}>
-                <TouchableOpacity activeOpacity={1} style={STYLE.cr_product} onPress={() => {
-                    setCustomerDropdown(!custumerDropdown); setProductDropdown(false)
-                }}>
-                    <Text style={STYLE.TextInput}>{addCustomer || 'Add Customer'}</Text>
-                    {custumerDropdown ?
-                        <MaterialCommunityIcons name='chevron-up' style={STYLE.icon} color={color2} size={60} />
-                        :
-                        <MaterialCommunityIcons name='chevron-down' style={STYLE.icon} color={color2} size={60} />
-                    }
-                </TouchableOpacity>
-                {custumerDropdown && customers && <FlatList
+                <Pressable
+                    onPress={() => {
+                        setcustomerDropdown(!customerDropdown);
+                        setProductDropdown(false)
+                    }}
+                    style={STYLE.cr_product}
+                >
+                    <View style={STYLE.TextInput} activeOpacity={0.9} >
+                        <Text style={STYLE.text}>{customerName || 'Customer name'}</Text>
+                    </View>
+                    <Ionicons name='options-outline' style={STYLE.icon} color={color2} size={40} />
+                </Pressable>
+                {customerDropdown && customer && <FlatList
+                    data={customer}
                     style={styles.customerList}
-                    data={customers}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => customerList(item)}
                 />}
-                <TouchableOpacity activeOpacity={1} style={STYLE.cr_product} onPress={() => {
-                    setProductDropdown(!productDropdown); setCustomerDropdown(false)
-                }}>
-                    <Text style={STYLE.TextInput}>Add Product</Text>
-                    {productDropdown ?
-                        <MaterialCommunityIcons name='chevron-up' style={STYLE.icon} color={color2} size={60} />
-                        :
-                        <MaterialCommunityIcons name='chevron-down' style={STYLE.icon} color={color2} size={60} />
-                    }
-                </TouchableOpacity>
+                <Pressable
+                    onPress={() => {
+                        setProductDropdown(!productDropdown);
+                        setcustomerDropdown(false);
+                    }}
+                    style={STYLE.cr_product}
+                >
+                    <View style={STYLE.TextInput} activeOpacity={0.9}>
+                        <Text style={STYLE.text}>{'Products name'}</Text>
+                    </View>
+                    <Ionicons name='options-outline' style={STYLE.icon} color={color2} size={40} />
+                </Pressable>
                 {productDropdown && products && <FlatList
-                    style={styles.customerList}
                     data={products}
+                    style={styles.customerList}
                     keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => productList(item)}
+                    renderItem={({ item, index }) => productList(item, index)}
                 />}
                 {selectedProducts.length !== 0 && !productDropdown && <FlatList
                     style={{ maxHeight: 200 }}
                     data={selectedProducts}
                     keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }, index) => selected(item, index)}
-                />}
-                <View style={STYLE.footer}>
-                    <TouchableOpacity style={STYLE.btn} onPress={addInvoice} >
-                        <Text style={STYLE.btnTxt}>Add</Text>
+                    renderItem={({ item, index }) => selected(item, index)}
+                />}            
+                <View style={STYLE.cr_product}>
+                    <TouchableOpacity style={STYLE.btn} onPress={next} >
+                        <Text style={STYLE.btnTxt}>Next</Text>
                     </TouchableOpacity>
                 </View>
             </View>
-        </View >
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
-    cr_product: {
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row',
-        marginTop: 20,
-        paddingRight: 10,
-    },
-    icon: {
-        width: '20%',
-        textAlign: 'center',
-    },
-    TextInput: {
-        width: '80%',
-        paddingHorizontal: 20,
-        paddingVertical: 15,
-        borderWidth: 1,
-        borderTopRightRadius: 100,
-        borderBottomRightRadius: 100,
-        borderColor: color2,
-        color: color2,
-        fontFamily: Bold,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    text: {
-        color: color2,
-        fontFamily: Bold,
-    },
     customerList: {
         width: '75%',
         maxHeight: 200,
@@ -244,33 +248,49 @@ const styles = StyleSheet.create({
         color: color2,
         padding: 15,
     },
-    footer: {
-        // flex: 1,
-        alignItems: 'center',
+    list: {
         flexDirection: 'row',
-        // height: 100,
-        marginVertical: 20,
-        paddingVertical: 10
+        alignItems: 'center',
+    },
+    selectedProducts: {
+        flexDirection: 'row',
+        paddingHorizontal: 20,
+        alignItems: 'center',
+        width: '60%'
+    },
+    listItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        backgroundColor: color2,
+        marginLeft: 5,
+        padding: 5,
+        borderWidth: 1,
+        borderRadius: 10
+    },
+    button: {
+        width: '40%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     btn: {
-        justifyContent: 'flex-end',
-        flexDirection: 'row-reverse',
-        alignItems: 'center',
-        width: Dimensions.get('window').width * .78,
-        height: 50,
         backgroundColor: color2,
+        padding: 5,
+        marginHorizontal: 5,
         borderWidth: 1,
-        borderTopRightRadius: 100,
-        borderBottomRightRadius: 100,
-        borderColor: color2,
-        paddingHorizontal: 20,
-        paddingVertical: 10,
+        borderRadius: 10
     },
-    btnTxt: {
+    text: {
+        marginHorizontal: 5,
         color: color1,
-        fontSize: 20,
-        fontFamily: Bold,
-        textTransform: 'uppercase',
+        fontFamily: Bold
     },
-
+    itemChanges: {
+        paddingHorizontal: '10%',
+    },
+    increDecre: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    }
 })

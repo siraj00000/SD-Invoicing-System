@@ -13,6 +13,8 @@ import Setting from '../Screens/Settings';
 import Settingoption from '../Screens/Settings/SettingOption';
 import Currency from '../Screens/Settings/Currency';
 import TAX from '../Screens/Settings/TAX';
+import Customername from '../Screens/AddCustomer/CustomerName';
+import InvoiceCreate from '../Screens/CreateInvoices/AddInvoice';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -36,9 +38,11 @@ const SD_Deshboard = () => {
             <Stack.Screen name='Deshboard' component={Deshboard} />
             <Stack.Screen name='Add Product' component={Addproduct} />
             <Stack.Screen name='Add Customer' component={Addcustomer} />
+            <Stack.Screen name='Customer name' component={Customername} />
             <Stack.Screen name='View Products' component={ViewProduct} />
             <Stack.Screen name='View Customers' component={ViewCustomers} />
-            <Stack.Screen name='Create Invoices' component={CreateInvoices} />
+            <Stack.Screen name='Create Invoices' component={CreateInvoices} />            
+            <Stack.Screen name='Add Invoices' component={InvoiceCreate} />            
             <Stack.Screen name='View Invoices' component={ViewInvoices} />
             <Stack.Screen name='Setting Option' component={Settingoption} />
             <Stack.Screen name='Currency' component={Currency} />

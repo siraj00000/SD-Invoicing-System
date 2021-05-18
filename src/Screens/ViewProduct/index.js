@@ -9,6 +9,7 @@ import { color2, color1 } from '../../Themes/Color';
 import { getAllProducts } from '../../SqliteDatabase/Product';
 import { ScreenHeader } from '../../Component/Header';
 import { STYLE } from '../../Utils/Stylesheet/Style';
+import { Bold } from '../../Themes/FontFamily';
 
 export default function ViewProduct({ navigation, route }) {
     let [flatListItems, setFlatListItems] = useState([]);
@@ -28,19 +29,23 @@ export default function ViewProduct({ navigation, route }) {
                 key={item.product_id}
                 style={styles.productCart}>
                 <View style={styles.productItem}>
-                    <FontAwesome5 name='box-open'  color={color1} size={20} />
+                    <FontAwesome5 name='box-open'  color={color2} size={20} />
                     <Text style={styles.cardText}>{item.product_name}</Text>
                 </View>
                 <View style={styles.productItem}>
-                    <MaterialCommunityIcons name='weight-kilogram'  color={color1} size={30} />
+                    <MaterialCommunityIcons name='weight-kilogram'  color={color2} size={30} />
                     <Text style={styles.cardText}>{item.product_weight}</Text>
                 </View>
                 <View style={styles.productItem}>
-                    <Entypo name='price-tag'  color={color1} size={20} />
+                    <Entypo name='price-tag'  color={color2} size={20} />
                     <Text style={styles.cardText}>{item.unit_price}</Text>
                 </View>
                 <View style={styles.productItem}>
-                    <FontAwesome5 name='dollar-sign'  color={color1} size={20} />
+                    <FontAwesome5 name='boxes' color={color2} size={20} />
+                    <Text style={styles.cardText}>{item.quaintity}</Text>
+                </View>
+                <View style={styles.productItem}>
+                    <FontAwesome5 name='dollar-sign'  color={color2} size={20} />
                     <Text style={styles.cardText}>{item.unit_cost}</Text>
                 </View>
             </View>
@@ -75,28 +80,28 @@ const styles = StyleSheet.create({
         paddingVertical: 40,
     },
     productCart: {
-        borderColor: color2,
-        backgroundColor: color1,
-        padding: 10,
-        marginVertical: 10,
-        backgroundColor: color2,
-        borderWidth: 1,
-        borderTopRightRadius: 5,
-        borderBottomRightRadius: 50,
+        width: '100%',
         flexDirection: 'row',
+        alignItems: 'center',
         flexWrap: 'wrap',
-        justifyContent: 'space-between',
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        marginVertical: 10,
+        backgroundColor: color1,
+        borderWidth: 1,
+        borderColor: color2,
+        borderLeftWidth: 0,
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 100,
     },
     cardText: {
-        color: color1,
-        fontWeight: 'bold',
-        fontSize: 15,
-        fontFamily: 'Montserrat-Bold',
-        marginHorizontal: 5
+        color: color2,
+        fontFamily: Bold,
+        marginLeft: 5,
+        margin: 5
     },
     productItem: {     
-        width: '25%',
-        justifyContent: 'center',
+        width: '30%',
         flexDirection: 'row',
         alignItems: 'center',
     }

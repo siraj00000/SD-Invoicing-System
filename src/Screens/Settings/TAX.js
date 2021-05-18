@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Checkbox } from 'react-native-paper';
 import { ScreenHeader } from '../../Component/Header';
-import { Alert, StyleSheet, Text, TextInput, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { STYLE } from '../../Utils/Stylesheet/Style'
-import { color1, color2 } from '../../Themes/Color';
+import { color2 } from '../../Themes/Color';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Bold } from '../../Themes/FontFamily';
+import { addTaxInfo } from '../../SqliteDatabase/DefaultData';
 
 // check ? false : !check
 export default function TAX({ navigation, route }) {
@@ -20,7 +20,7 @@ export default function TAX({ navigation, route }) {
     const [ratio, setRatio] = useState('');
 
     const addTax = () => {
-
+        addTaxInfo(taxName, taxType, ratio);
     }
     return (
         <View style={STYLE.section}>
@@ -31,7 +31,7 @@ export default function TAX({ navigation, route }) {
                 size={40}
                 navigation={navigation}
             />
-            <View style={STYLE.body}>
+            <ScrollView style={STYLE.body}>
                 <View>
                     <View style={STYLE.cr_product}>
                         <TextInput selectionColor={color2} placeholderTextColor={color2} placeholder='Tax Name'
@@ -43,7 +43,7 @@ export default function TAX({ navigation, route }) {
                         <FontAwesome name='balance-scale' style={STYLE.icon} color={color2} size={40} />
                     </TouchableOpacity>
                     {dropdown &&
-                        <View style={STYLE}>
+                        <View style={styles.checkboxContainer}>
                             <View style={styles.checkbox}>
                                 <Checkbox
                                     status={taxType === 'Amount' ? 'checked' : 'unchecked'}
@@ -80,12 +80,15 @@ export default function TAX({ navigation, route }) {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </View>
+            </ScrollView>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    checkboxContainer: {
+        paddingHorizontal: 10
+    },
     checkbox: {
         flexDirection: 'row',
         alignItems: 'center',
