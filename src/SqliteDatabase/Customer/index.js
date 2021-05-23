@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
 import { openDatabase } from 'react-native-sqlite-storage';
-var db = openDatabase({ name: 'SDINVOICINGSYSTEM.db' });
+var db = openDatabase({ name: 'tableSd.db' });
 
 
 export const createTableForCustomer = () => {

@@ -5,7 +5,7 @@ import { Bold } from '../../Themes/FontFamily';
 import { ScreenHeader } from '../../Component/Header';
 import { STYLE } from '../../Utils/Stylesheet/Style';
 import { TouchableOpacity, TextInput, View, Text } from 'react-native';
-import { AddCustomerForInvoice, AddDesForInvoice, AddProductsForInvoice, createFactTableForDescription, createFactTableForProduct, createTableForCustomer, customerIdForCheck } from '../../SqliteDatabase/Invoices';
+import { AddCustomerForInvoice, AddDesForInvoice, AddProductsForInvoice, createFactTableForDescription, createFactTableForProduct, createTableForCustomer, customerIdForCheck, desIdForCheck, updateDes } from '../../SqliteDatabase/Invoices';
 
 export default function InvoiceCreate({ navigation, route }) {
     const { customer, products } = route.params;
@@ -23,32 +23,41 @@ export default function InvoiceCreate({ navigation, route }) {
             AddProductsForInvoice(name, weightOld, weight, priceOld, price, quantity, uniqueId);
             console.log('chek product table', i, products.length);
         }
-    }
-    const allTables = () => {
+    };
+    const createOrEditDes = async (des) => {
+        const check = des.some(i => {
+            console.log(i.desId, 'd', uniqueId);
+            return i.desId == uniqueId;
+        });
+        if (check) {
+            updateDes(descriptionEng, descriptionArabic, uniqueId);
+        } else if (!check) {
+            AddDesForInvoice(descriptionEng, descriptionArabic, uniqueId);
+        }
+    };
+    const allTables = (des) => {
         AddCustomerForInvoice(contactPerson, contactPersonArabic, companyName, companyNameArabic, email, address, tele, VAT, CR, uniqueId);
         addProductToDb();
-        AddDesForInvoice(descriptionEng, descriptionArabic, uniqueId);
-    }
+        createOrEditDes(des);
+    };
     const val = (id1, id2) => { return id1 == id2 };
-    const checkAndCreateTables = (id) => {
+    const checkAndCreateTables = (id, des) => {
         if (id.length) {
-            const check = id.some((i) => val(i.customerId, uniqueId))
+            const check = id.some((i) => val(i.customerId, uniqueId));            
             if (check) {
                 addProductToDb();
-                AddDesForInvoice(descriptionEng, descriptionArabic, uniqueId);
-                console.log('check yes');
+                createOrEditDes(des);
             } else if (!check) {
-                allTables();
-                console.log('check no');
+                allTables(des);
             }
         } else if (!id.length) {
-            allTables();
-            console.log('no length');
+            allTables(des);            
         }
-    }
+    };
     const addInvoiceToDb = async () => {
+        const des = await desIdForCheck();
         const id = await customerIdForCheck();
-        checkAndCreateTables(id);
+        checkAndCreateTables(id, des);
     };
     return (
         <View style={STYLE.section}>

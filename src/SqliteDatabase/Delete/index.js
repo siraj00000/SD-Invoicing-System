@@ -1,5 +1,5 @@
 import { openDatabase } from 'react-native-sqlite-storage';
-var db = openDatabase({ name: 'SDINVOICINGSYSTEM.db' });
+var db = openDatabase({ name: 'tableSd.db' });
 
 const deleteCustomerFromInvoice = (customerId) => {
     db.transaction((tx) => {

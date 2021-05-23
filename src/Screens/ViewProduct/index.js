@@ -42,7 +42,7 @@ export default function ViewProduct({ navigation, route }) {
                 </View>
                 <View style={styles.productItem}>
                     <FontAwesome5 name='boxes' color={color2} size={20} />
-                    <Text style={styles.cardText}>{item.quaintity}</Text>
+                    <Text style={styles.cardText}>{item.quantity}</Text>
                 </View>
                 <View style={styles.productItem}>
                     <FontAwesome5 name='dollar-sign'  color={color2} size={20} />

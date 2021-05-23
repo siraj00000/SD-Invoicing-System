@@ -20,6 +20,7 @@ import { Bold } from '../../Themes/FontFamily';
 import { ScreenHeader } from '../../Component/Header';
 import { STYLE } from '../../Utils/Stylesheet/Style';
 import ItemChanges from '../../Utils/modal';
+import { Button } from 'react-native';
 
 export default function AddInvoices({ navigation, route }) {
     const [customer, setCustomer] = useState('');
@@ -32,7 +33,7 @@ export default function AddInvoices({ navigation, route }) {
     const [itemList, setItemList] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [modalIndex, setModalIndex] = useState('');
-
+    
     useEffect(() => {
         getAllCustomerAndProductsFromDb();
     }, []);
@@ -78,12 +79,13 @@ export default function AddInvoices({ navigation, route }) {
                     product.push({
                         id: item.product_id,
                         name: item.product_name,
-                        quantity: item.quaintity,
+                        quantity: item.quantity,
                         price: item.unit_price,
                         priceOld: item.unit_price,
                         weight: item.product_weight,
                         weightOld: item.product_weight,
-                        total: item.unit_price * item.quaintity,
+                        totalWeight: item.product * item.quantity,
+                        totalPrice: item.unit_price * item.quantity,
                         productIndex: index,
                     });
                     setSelectedProducts(product);
@@ -109,10 +111,10 @@ export default function AddInvoices({ navigation, route }) {
             setOpenModal(val);
         }
         const addChangesValue = (item) => {
-            const delteSelectedProduct = [...selectedProducts];
-            delteSelectedProduct.splice(index, -1);
-            delteSelectedProduct[index] = item;
-            setSelectedProducts(delteSelectedProduct);
+            const deleteAndPutNewOne = [...selectedProducts];
+            deleteAndPutNewOne.splice(index, -1);
+            deleteAndPutNewOne[index] = item;
+            setSelectedProducts(deleteAndPutNewOne);
         };
         return (
             <View style={styles.list}>
@@ -153,12 +155,12 @@ export default function AddInvoices({ navigation, route }) {
         )
     }
     const next = async () => {
-        if(customerInfo.length && selectedProducts.length){
+        if (customerInfo.length && selectedProducts.length) {
             navigation.navigate('Add Invoices', {
                 customer: customerInfo,
                 products: selectedProducts
             })
-        }else{
+        } else {
             Alert.alert('Make sure all fields are filled');
         }
     }
@@ -213,7 +215,7 @@ export default function AddInvoices({ navigation, route }) {
                     data={selectedProducts}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => selected(item, index)}
-                />}            
+                />}
                 <View style={STYLE.cr_product}>
                     <TouchableOpacity style={STYLE.btn} onPress={next} >
                         <Text style={STYLE.btnTxt}>Next</Text>
@@ -260,6 +262,7 @@ const styles = StyleSheet.create({
     },
     listItem: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
         justifyContent: 'space-between',
         width: '100%',
         backgroundColor: color2,

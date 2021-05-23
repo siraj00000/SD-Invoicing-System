@@ -1,20 +1,19 @@
 import { Alert } from 'react-native';
 import { openDatabase } from 'react-native-sqlite-storage';
-var db = openDatabase({ name: 'SDINVOICINGSYSTEM.db' });
-
+var db = openDatabase({ name: 'tableSd.db' });
 
 export const createTableForProduct = () => {
   db.transaction(function (txn) {
     txn.executeSql(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name='products'",
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='productItemTable'",
       [],
       function (tx, res) {
         console.log('item:', res.rows.length);
         if (res.rows.length == 0) {
           console.log('Empty table');
-          txn.executeSql('DROP TABLE IF EXISTS products', []);
+          txn.executeSql('DROP TABLE IF EXISTS productItemTable', []);
           txn.executeSql(
-            'CREATE TABLE IF NOT EXISTS products(product_id INTEGER PRIMARY KEY AUTOINCREMENT, product_name VARCHAR(5), product_weight INT(3), unit_price INT(3), unit_cost INT(3), quantity INT(10))',
+            'CREATE TABLE IF NOT EXISTS productItemTable(product_id INTEGER PRIMARY KEY AUTOINCREMENT, product_name VARCHAR(5), product_weight INT(3), unit_price INT(3), unit_cost INT(3), quantity INT(10))',
             []
           );
         }
@@ -22,9 +21,6 @@ export const createTableForProduct = () => {
     );
   });
 }
-
-
-
 export const AddProduct = (productName, productWeight, productPrice, productCost, quantity, navigation) => {
   const obj = {
     productName, productWeight, productPrice, productCost, quantity
@@ -37,7 +33,7 @@ export const AddProduct = (productName, productWeight, productPrice, productCost
   };
   db.transaction(function (tx) {
     tx.executeSql(
-      'INSERT INTO products(product_name, product_weight, unit_price, unit_cost, quantity) VALUES (?,?,?,?,?)',
+      'INSERT INTO productItemTable(product_name, product_weight, unit_price, unit_cost, quantity) VALUES (?,?,?,?,?)',
       [productName, productWeight, productPrice, productCost, quantity],
       (tx, results) => {
         console.log('Results', results.rowsAffected);
@@ -63,7 +59,7 @@ export const getAllProducts = () => {
   return new Promise((resolve) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT * FROM products',
+        'SELECT * FROM productItemTable',
         [],
         (tx, results) => {
           var temp = [];
@@ -75,3 +71,4 @@ export const getAllProducts = () => {
     });
   })
 }
+

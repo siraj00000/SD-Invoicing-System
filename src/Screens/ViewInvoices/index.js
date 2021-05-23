@@ -29,12 +29,19 @@ export default function ViewInvoices({ navigation, route }) {
 
     const invoiceList = (item) => {
         let { customerId } = item;
+        const detailInvoice = () => {
+            navigation.navigate('Invoice Detail', {
+                customer: item,
+                products: getProduct,
+                description: description,
+                id: customerId
+            })
+        }
         return (
             <View key={customerId} style={styles.invoiceCard}>
                 <View style={styles.invoiceItem}>
                     <Ionicons name='people-sharp' color={color1} size={25} />
                     <Text style={styles.invoiceText}>{item.contact_person}</Text>
-                    {/* <Text style={styles.invoiceText}>{item.contact_person_arabic}</Text> */}
                 </View>
                 <FlatList
                     horizontal
@@ -55,8 +62,8 @@ export default function ViewInvoices({ navigation, route }) {
                         )
                     }}
                 />
-                <View style={styles.invoiceItem}>
-                    <Pressable style={styles.detailBtn}>
+                <View style={[styles.invoiceItem, {padding: 10}]}>
+                    <Pressable style={styles.detailBtn} onPress={detailInvoice}>
                         <Text style={styles.detailText}>Detail</Text>
                     </Pressable>
                 </View>
@@ -66,13 +73,13 @@ export default function ViewInvoices({ navigation, route }) {
     return (
         <View style={STYLE.section}>
             <StatusBar size='auto' />
-            <ScreenHeader 
-                Title={route.name} 
-                icon={'file-document'} 
-                Iconbar={MaterialCommunityIcons} 
+            <ScreenHeader
+                Title={route.name}
+                icon={'file-document'}
+                Iconbar={MaterialCommunityIcons}
                 size={40}
-                navigation={navigation} 
-                />           
+                navigation={navigation}
+            />
             <View>
             </View>
             <View style={{ flex: 1 }}>
@@ -94,7 +101,7 @@ const styles = StyleSheet.create({
     },
     invoiceCard: {
         width: '100%',
-        height: 80,        
+        height: 80,
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: color2,
@@ -102,21 +109,22 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 50,
         borderColor: color2,
         marginVertical: 10,
+        paddingHorizontal: 5
     },
     invoiceItem: {
-        width: '20%',       
-        alignItems: 'flex-start',
-        padding: 10,
+        width: '20%',
+        alignItems: 'center',
+        paddingVertical: 10,
         marginVertical: 5,
         marginRight: 10,
         borderColor: color1,
         zIndex: 1
     },
     invoiceText: {
-        // marginLeft: 5,
+        width: '100%',
         color: color1,
         fontFamily: 'Montserrat-Bold',
-        textAlign: 'right'
+        textAlign: 'center'
     },
     list: {
         width: '60%',
@@ -137,6 +145,7 @@ const styles = StyleSheet.create({
     detailText: {
         fontFamily: Semi_Bold,
         color: color2,
-        fontSize: 12
+        fontSize: 12,
+        textAlign: 'center'
     }
 })

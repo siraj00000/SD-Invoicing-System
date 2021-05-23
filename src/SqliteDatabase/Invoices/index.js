@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
 import { openDatabase } from 'react-native-sqlite-storage';
-var db = openDatabase({ name: 'SDINVOICINGSYSTEM.db' });
+var db = openDatabase({ name: 'tableSd.db' });
 
 export const createTableForCustomer = () => {
   db.transaction(function (txn) {
@@ -56,20 +56,20 @@ export const AddCustomerForInvoice = (contactPerson, contactPersonArbic, company
 
 export const createFactTableForProduct = () => {
   db.transaction(function (txn) {
-      txn.executeSql(
-          "SELECT name FROM sqlite_master WHERE type='table' AND name='prod_table'",
-          [],
-          function (tx, res) {
-              console.log('productstable:', res.rows.length);
-              if (res.rows.length == 0) {
-                  txn.executeSql('DROP TABLE IF EXISTS prod_table', []);
-                  txn.executeSql(
-                      'CREATE TABLE IF NOT EXISTS prod_table(product_id INTEGER PRIMARY KEY AUTOINCREMENT, product_name VARCHAR(5), product_weight INT(10), product_total_weight INT(10), unit_price INT(10), unit_total_price INT(10), quantity INT(10), productId INT(10))',
-                      []
-                  );
-              }
-          }
-      );
+    txn.executeSql(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='prod_table'",
+      [],
+      function (tx, res) {
+        console.log('productstable:', res.rows.length);
+        if (res.rows.length == 0) {
+          txn.executeSql('DROP TABLE IF EXISTS prod_table', []);
+          txn.executeSql(
+            'CREATE TABLE IF NOT EXISTS prod_table(product_id INTEGER PRIMARY KEY AUTOINCREMENT, product_name VARCHAR(5), product_weight INT(10), product_total_weight INT(10), unit_price INT(10), unit_total_price INT(10), quantity INT(10), productId INT(10))',
+            []
+          );
+        }
+      }
+    );
   });
 }
 
@@ -107,20 +107,20 @@ export const AddProductsForInvoice = (productName, productWeight, productTotalWe
 };
 export const createFactTableForDescription = () => {
   db.transaction(function (txn) {
-      txn.executeSql(
-          "SELECT name FROM sqlite_master WHERE type='table' AND name='des_table'",
-          [],
-          function (tx, res) {
-              console.log('descriptiontable:', res.rows.length);
-              if (res.rows.length == 0) {
-                  txn.executeSql('DROP TABLE IF EXISTS des_table', []);
-                  txn.executeSql(
-                      'CREATE TABLE IF NOT EXISTS des_table(des_id INTEGER PRIMARY KEY AUTOINCREMENT, description_eng VARCHAR(25), description_arabic VARCHAR(25), desId INT(10))',
-                      []
-                  );
-              }
-          }
-      );
+    txn.executeSql(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='description_table'",
+      [],
+      function (tx, res) {
+        console.log('descriptiontable:', res.rows.length);
+        if (res.rows.length == 0) {
+          txn.executeSql('DROP TABLE IF EXISTS description_table', []);
+          txn.executeSql(
+            'CREATE TABLE IF NOT EXISTS description_table(des_id INTEGER PRIMARY KEY AUTOINCREMENT, description_eng VARCHAR(25), description_arabic VARCHAR(25), desId INT(10))',
+            []
+          );
+        }
+      }
+    );
   });
 }
 export const AddDesForInvoice = (desEng, desArabic, desId) => {
@@ -129,20 +129,20 @@ export const AddDesForInvoice = (desEng, desArabic, desId) => {
   };
   for (var key in obj) {
     if (obj[key] === '') {
-      Alert.alert(`${key} field is empty`);
+      Alert.alert(`${obj[key]} field is empty`);
       return false;
     }
   };
   db.transaction(function (tx) {
     tx.executeSql(
-      'INSERT INTO des_table(description_eng, description_arabic, desId) VALUES (?,?,?)',
+      'INSERT INTO description_table(description_eng, description_arabic, desId) VALUES (?,?,?)',
       [desEng, desArabic, desId],
       (tx, results) => {
         console.log('des', results.rowsAffected);
         if (results.rowsAffected > 0) {
           Alert.alert(
             'Success',
-            // 'des has been added',
+            'Invoice has been added',
             [
               {
                 text: 'Ok',
@@ -160,68 +160,115 @@ export const AddDesForInvoice = (desEng, desArabic, desId) => {
 
 export const customerIdForCheck = () => {
   return new Promise((resolve) => {
-      db.transaction((tx) => {
-          tx.executeSql(
-              'SELECT customerId FROM ct_tab',
-              [],
-              (tx, results) => {
-                  var temp = [];
-                  for (let i = 0; i < results.rows.length; ++i)
-                      temp.push(results.rows.item(i));
-                  resolve(temp)
-              }
-          );
-      });
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT customerId FROM ct_tab',
+        [],
+        (tx, results) => {
+          var temp = [];
+          for (let i = 0; i < results.rows.length; ++i)
+            temp.push(results.rows.item(i));
+          resolve(temp)
+        }
+      );
+    });
   })
+}
+
+export const desIdForCheck = () => {
+  return new Promise((resolve) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT desId FROM description_table',
+        [],
+        (tx, results) => {
+          var temp = [];
+          for (let i = 0; i < results.rows.length; ++i)
+            temp.push(results.rows.item(i));
+          resolve(temp)
+        }
+      );
+    });
+  })
+}
+export const updateDes = (desEng, desArabic, id) => {
+  const obj = [desEng, desArabic, id];
+  for (var key in obj) {
+    if (obj[key] == '') {
+      Alert.alert(`Please fill ${key} `);
+      return false;
+    }
+  }
+  db.transaction((tx) => {
+    tx.executeSql(
+      'UPDATE description_table set description_eng=?, description_arabic=? where desId=?',
+      [desEng, desArabic, id],
+      (tx, results) => {
+        console.log('Results', results.rowsAffected);
+        if (results.rowsAffected > 0) {
+          Alert.alert(
+            'Success',
+            'Description updated successfully',
+            [
+              {
+                text: 'Ok',
+              },
+            ],
+            { cancelable: false }
+          );
+        } else alert('Updation Failed');
+      }
+    );
+  });
 }
 export const getAllInvoices = () => {
   return new Promise((resolve) => {
-      db.transaction((tx) => {
-          tx.executeSql(
-              'SELECT * FROM ct_tab ',
-              // 'SELECT * FROM sdInvoiceTable INNER JOIN productTable ON sdInvoiceTable.invoice_Id = productTable.invoice_id  ',
-              [],
-              (tx, results) => {
-                  // console.log('results>>', results);
-                  var temp = [];
-                  for (let i = 0; i < results.rows.length; ++i)
-                      temp.push(results.rows.item(i));
-                  resolve(temp)
-              }
-          );
-      });
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM ct_tab ',
+        // 'SELECT * FROM sdInvoiceTable INNER JOIN productTable ON sdInvoiceTable.invoice_Id = productTable.invoice_id  ',
+        [],
+        (tx, results) => {
+          // console.log('results>>', results);
+          var temp = [];
+          for (let i = 0; i < results.rows.length; ++i)
+            temp.push(results.rows.item(i));
+          resolve(temp)
+        }
+      );
+    });
   })
 }
 
 export const getAllSelectedProducts = (id) => {
   return new Promise((resolve) => {
-      db.transaction((tx) => {
-          tx.executeSql(
-              `SELECT * FROM prod_table`,
-              [],
-              (tx, results) => {
-                  var temp = [];
-                  for (let i = 0; i < results.rows.length; ++i)
-                      temp.push(results.rows.item(i));
-                  resolve(temp)
-              }
-          );
-      });
+    db.transaction((tx) => {
+      tx.executeSql(
+        `SELECT * FROM prod_table`,
+        [],
+        (tx, results) => {
+          var temp = [];
+          for (let i = 0; i < results.rows.length; ++i)
+            temp.push(results.rows.item(i));
+          resolve(temp)
+        }
+      );
+    });
   })
 }
 export const getAllProductDes = (id) => {
   return new Promise((resolve) => {
-      db.transaction((tx) => {
-          tx.executeSql(
-              `SELECT * FROM des_table`,
-              [],
-              (tx, results) => {
-                  var temp = [];
-                  for (let i = 0; i < results.rows.length; ++i)
-                      temp.push(results.rows.item(i));
-                  resolve(temp)
-              }
-          );
-      });
+    db.transaction((tx) => {
+      tx.executeSql(
+        `SELECT * FROM description_table`,
+        [],
+        (tx, results) => {
+          var temp = [];
+          for (let i = 0; i < results.rows.length; ++i)
+            temp.push(results.rows.item(i));
+          resolve(temp)
+        }
+      );
+    });
   })
 }
