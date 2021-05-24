@@ -12,6 +12,8 @@ target 'sd_invoicing_system' do
     :hermes_enabled => false
   )
 
+  pod 'react-native-view-shot', :path => '../node_modules/react-native-view-shot'
+
   target 'sd_invoicing_systemTests' do
     inherit! :complete
     # Pods for testing

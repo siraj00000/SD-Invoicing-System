@@ -25,7 +25,6 @@ export const createTableForCurrency = () => {
 
 // This function will add currency to database
 export const AddCurrency = (currencyName, currencySymbol) => {
-    console.log('Customer name', currencyName, currencySymbol);
     if (!currencyName) {
         alert('Please fill currency name');
         return;
@@ -83,7 +82,6 @@ export const createTableForTax = () => {
 
 // This funtion will insert tax information in database
 export const addTaxInfo = (taxName, taxType, ratio) => {
-    console.log('tax>>>', taxName, taxType, ratio);
     if (!taxName) {
         Alert.alert('fill tax name field');
     }

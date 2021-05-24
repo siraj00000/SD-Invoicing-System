@@ -1,5 +1,8 @@
+import React from 'react'
 import { Alert } from 'react-native';
 import { openDatabase } from 'react-native-sqlite-storage';
+import { color2 } from '../../Themes/Color';
+import Status from '../../Utils/alert';
 var db = openDatabase({ name: 'tableSd.db' });
 
 export const createTableForProduct = () => {
@@ -27,8 +30,9 @@ export const AddProduct = (productName, productWeight, productPrice, productCost
   };
   for (var key in obj) {
     if (obj[key] === '') {
-      Alert.alert(`${key} field is empty`);
-      return false;
+      return (
+        Alert.alert(`Field is empty`)
+      );
     }
   };
   db.transaction(function (tx) {
@@ -44,12 +48,12 @@ export const AddProduct = (productName, productWeight, productPrice, productCost
             [
               {
                 text: 'Ok',
-                onPress: () => navigation.navigate('Deshboard'),
+                onPress: () => navigation.navigate('Deshboard'),                
               },
             ],
             { cancelable: false }
           );
-        } else alert('Registration Failed');
+        } else Alert.alert('Something wrong');
       }
     );
   });

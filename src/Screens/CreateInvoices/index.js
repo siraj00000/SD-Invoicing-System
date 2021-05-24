@@ -21,6 +21,7 @@ import { ScreenHeader } from '../../Component/Header';
 import { STYLE } from '../../Utils/Stylesheet/Style';
 import ItemChanges from '../../Utils/modal';
 import { Button } from 'react-native';
+import Status from '../../Utils/alert';
 
 export default function AddInvoices({ navigation, route }) {
     const [customer, setCustomer] = useState('');
@@ -144,12 +145,13 @@ export default function AddInvoices({ navigation, route }) {
                 </Pressable>
                 {
                     openModal && index == modalIndex &&
-                    <ItemChanges
-                        open={openModal}
-                        onModalClose={onModalClose}
-                        item={selectedProducts[index]}
-                        addChangesValue={addChangesValue}
-                    />
+                    <Status message='yes running' open={openModal} />
+                    // <ItemChanges
+                    //     open={openModal}
+                    //     onModalClose={onModalClose}
+                    //     item={selectedProducts[index]}
+                    //     addChangesValue={addChangesValue}
+                    // />
                 }
             </View>
         )

@@ -1,16 +1,50 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import RNPrint from 'react-native-print';
+import ViewShot from "react-native-view-shot";
 import { ScreenHeader } from '../../Component/Header'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { color1, color2 } from '../../Themes/Color';
-import { Bold, Semi_Bold } from '../../Themes/FontFamily';
+import { Bold, Italic, Semi_Bold } from '../../Themes/FontFamily';
 import { STYLE } from '../../Utils/Stylesheet/Style'
-import { ScrollView, Dimensions, FlatList, Text, View, StyleSheet } from 'react-native';
+import { ScrollView, Button, Text, View, StyleSheet, Share, Pressable } from 'react-native';
+
 
 export default function Invoicedetail({ navigation, route }) {
-    const [weight, setWeight] = useState([]);
     const { customer, products, description, id } = route.params
-    console.log(description);
+    const [totalQuantity, setTotalQuantity] = useState([]);
+    const [totalWeight, setTotalWeight] = useState([]);
+    const [totalPrice, setTotalPrice] = useState([]);
+    const [weight, setWeight] = useState([]);
+    const [price, setPrice] = useState([]);
+    const viewShotRef = useRef();
+    useEffect(() => {
+        let tq = [...totalQuantity];
+        let tw = [...totalWeight];
+        let tp = [...totalPrice];
+        let w = [...weight];
+        let p = [...price];
+
+        for (var key in products) {
+            if (products[key].productId == id) {
+                p.push(products[key].unit_price);
+                w.push(products[key].product_weight);
+                tq.push(products[key].quantity);
+                tw.push(products[key].product_total_weight);
+                tp.push(products[key].unit_total_price);
+                setPrice(p);
+                setWeight(w);
+                setTotalQuantity(tq);
+                setTotalWeight(tw);
+                setTotalPrice(tp);
+            }
+        }
+    }, []);
+    // useEffect(() => {
+    //     setInterval(() => {
+    //         screenShot()
+    //     }, 3000);
+    // }, []);
 
     const {
         contact_person: customerName,
@@ -29,24 +63,54 @@ export default function Invoicedetail({ navigation, route }) {
             <View>
                 <View style={styles.detailContainer}>
                     <View style={styles.customerDetailEng}>
-                        <Text style={styles.customerInfoText}>Bill to</Text>
+                        <Text style={styles.heading}>Bill to: </Text>
                         <View style={styles.customer}>
-                            <Text style={styles.customerInfoText}>Name: {customerName}</Text>
-                            <Text style={styles.customerInfoText}>Company: {company_name}</Text>
-                            <Text style={styles.customerInfoText}>Tele: {telephone_number}</Text>
-                            <Text style={styles.customerInfoText}>VAT: {VAT}</Text>
-                            <Text style={styles.customerInfoText}>CR: {CR}</Text>
+                            <View style={styles.customerInfoContEng}>
+                                <Text style={styles.cusHeading}>Name: </Text>
+                                <Text style={styles.cusText}>{customerName}</Text>
+                            </View>
+                            <View style={styles.customerInfoContEng}>
+                                <Text style={styles.cusHeading}>Company: </Text>
+                                <Text style={styles.cusText}>{company_name}</Text>
+                            </View>
+                            <View style={styles.customerInfoContEng}>
+                                <Text style={styles.cusHeading}>Tele: </Text>
+                                <Text style={styles.cusText}>{telephone_number}</Text>
+                            </View>
+                            <View style={styles.customerInfoContEng}>
+                                <Text style={styles.cusHeading}>VAT: </Text>
+                                <Text style={styles.cusText}>{VAT}</Text>
+                            </View>
+                            <View style={styles.customerInfoContEng}>
+                                <Text style={styles.cusHeading}>CR: </Text>
+                                <Text style={styles.cusText}>{CR}</Text>
+                            </View>
                         </View>
                     </View>
                     <View style={styles.customerDetailArabic}>
-                        <Text style={[styles.customerInfoText, { width: '100%' }]}>
-                            مشروع قانون ل</Text>
+                        <Text style={[styles.heading, { width: '100%' }]}>
+                            مشروع قانون ل:</Text>
                         <View style={styles.customer}>
-                            <Text style={styles.customerInfoText}>اسم: {customerNameArabic}</Text>
-                            <Text style={styles.customerInfoText}>شركة: {companyNameArabic}</Text>
-                            <Text style={styles.customerInfoText}>رقم الهاتف: {telephone_number}</Text>
-                            <Text style={styles.customerInfoText}>ظريبه الشراء: {VAT}</Text>
-                            <Text style={styles.customerInfoText}>رقم كر: {CR}</Text>
+                            <View style={styles.customerInfoContArabic}>
+                                <Text style={styles.cusHeading}>اسم: </Text>
+                                <Text style={styles.cusText}>{customerNameArabic}</Text>
+                            </View>
+                            <View style={styles.customerInfoContArabic}>
+                                <Text style={styles.cusHeading}>شركة: </Text>
+                                <Text style={styles.cusText}>{companyNameArabic}</Text>
+                            </View>
+                            <View style={styles.customerInfoContArabic}>
+                                <Text style={styles.cusHeading}>رقم الهاتف: </Text>
+                                <Text style={styles.cusText}>{telephone_number}</Text>
+                            </View>
+                            <View style={styles.customerInfoContArabic}>
+                                <Text style={styles.cusHeading}>ظريبه الشراء: </Text>
+                                <Text style={styles.cusText}>{VAT}</Text>
+                            </View>
+                            <View style={styles.customerInfoContArabic}>
+                                <Text style={styles.cusHeading}>رقم كر: </Text>
+                                <Text style={styles.cusText}>{CR}</Text>
+                            </View>
                         </View>
                     </View>
                 </View>
@@ -54,76 +118,90 @@ export default function Invoicedetail({ navigation, route }) {
         )
     }
     const Product = () => {
+        const W = weight.reduce((a, b) => a + b, 0)
+        const P = price.reduce((a, b) => a + b, 0)
+        const totalQuan = totalQuantity.reduce((a, b) => a + b, 0)
+        const totalW = totalWeight.reduce((a, b) => a + b, 0)
+        const totalP = totalPrice.reduce((a, b) => a + b, 0)
         return (
-            <View style={styles.productContainer}>
-                <View style={styles.productTable}>
-                    <Text style={styles.productItemName}>Name</Text>
-                    <Text style={styles.productItemName}>W</Text>
-                    <Text style={styles.productItemName}>P</Text>
-                    <Text style={styles.productItemName}>Q</Text>
-                    <Text style={styles.productItemName}>T W</Text>
-                    <Text style={styles.productItemName}>T P</Text>
-                </View>
-                <FlatList
-                    data={products}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => {
-                        const { productId, product_name, product_weight, product_total_weight, quantity, unit_price, unit_total_price } = item;
-                        const check = productId == id;
-                        let arr = [...weight];
-                        for(var key in item){
-                            if(item[key] == id){
-                                // arr.push(product_weight)
-                                // setWeight(arr);
-                                console.log(item[key]);
-                            }
-                        }
-                        // console.log(weight);
-                        return (
-                            <React.Fragment>
-                                { check &&
-                                    <React.Fragment>
-                                        <View style={styles.productTable}>
+            <React.Fragment>
+                <Text style={[styles.heading, { marginTop: 10 }]}>Products: </Text>
+                <View style={styles.productContainer}>
+                    <View style={[styles.productTable, { borderBottomWidth: 1, borderColor: color1 }]}>
+                        <Text style={styles.productItemName}>Name</Text>
+                        <Text style={styles.productItemName}>W</Text>
+                        <Text style={styles.productItemName}>P</Text>
+                        <Text style={styles.productItemName}>Q</Text>
+                        <Text style={styles.productItemName}>T W</Text>
+                        <Text style={styles.productItemName}>T P</Text>
+                    </View>
+                    <React.Fragment>
+                        {products.map(item => {
+                            const { product_id, productId, product_name, product_weight, product_total_weight, quantity, unit_price, unit_total_price } = item;
+                            const check = productId == id;
+                            return (
+                                <View style={styles.productTable} key={product_id}>
+                                    { check &&
+                                        <React.Fragment>
                                             <Text style={styles.productItemName}>{product_name}</Text>
                                             <Text style={styles.productItemName}>{product_weight}</Text>
                                             <Text style={styles.productItemName}>{unit_price}</Text>
                                             <Text style={styles.productItemName}>{quantity}</Text>
                                             <Text style={styles.productItemName}>{product_total_weight}</Text>
                                             <Text style={styles.productItemName}>{unit_total_price}</Text>
-                                        </View>
-                                        <View style={styles.productTable}></View>
-                                    </React.Fragment>
-                                }
-                            </React.Fragment>
-                        )
-                    }
-                    }
-                />
-            </View>
+                                        </React.Fragment>
+                                    }
+                                </View>
+                            )
+                        })}
+                    </React.Fragment>
+                    <View style={[styles.productTable, styles.total]}>
+                        <Text style={styles.productItemName}>  </Text>
+                        <Text style={styles.productItemName}>{W}</Text>
+                        <Text style={styles.productItemName}>{P}</Text>
+                        <Text style={styles.productItemName}>{totalQuan}</Text>
+                        <Text style={styles.productItemName}>{totalW}</Text>
+                        <Text style={styles.productItemName}>{totalP}</Text>
+                    </View>
+                </View>
+            </React.Fragment>
         )
     }
     const Description = () => {
         return (
-            <FlatList
-                data={description}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => {
+            <View style={styles.description}>
+                {description.map(item => {
                     const { description_eng, description_arabic, desId } = item;
                     const check = desId == id;
                     return (
-                        <View style={styles.description}>
+                        <View style={styles.description} key={desId}>
                             {check &&
-                                <>
-                                    <Text style={STYLE.text}>{description_eng}</Text>
-                                    <Text style={STYLE.text}>{description_arabic}</Text>
-                                </>
+                                <React.Fragment>
+                                    <View style={styles.description}>
+                                        <Text style={styles.heading}>Description:</Text>
+                                        <Text style={styles.desText}>{description_eng}</Text>
+                                    </View>
+                                    <View style={styles.description}>
+                                        <Text style={styles.heading}>وصف:</Text>
+                                        <Text style={styles.desText}>{description_arabic}</Text>
+                                    </View>
+                                </React.Fragment>
                             }
                         </View>
-
                     )
-                }}
-            />
+                })}
+            </View>
         )
+    }
+    const ViewScreenShot = async () => {
+        const imageUri = await viewShotRef.current.capture();
+        console.log(imageUri);
+        Share.share({
+            message:
+                'React Native | A framework for building native apps using React',
+            title: 'Image',
+            uri: imageUri,
+        })
     }
     return (
         <View style={STYLE.section}>
@@ -134,36 +212,64 @@ export default function Invoicedetail({ navigation, route }) {
                 size={40}
                 navigation={navigation}
             />
-            <View style={[STYLE.body, { borderWidth: 0, borderColor: color2 }]}>
-                <Customer />
-                <Product />
-                <Description />
-            </View>
+            <ScrollView style={[STYLE.body, { paddingBottom: 30 }]}>
+                <Pressable style={styles.print}
+                    onPress={ViewScreenShot}>
+                    <Text style={styles.printBtnText}>Print</Text>
+                </Pressable>
+                <ViewShot ref={viewShotRef} options={{ format: "jpg", quality: 0.9 }}
+                    style={styles.invoice}>
+                    <View style={styles.invoiceHeading}>
+                        <Text style={styles.invoiceHeadingText} >VAT Invoice</Text>
+                        <Text style={styles.invoiceHeadingText}>فاتورة ضريبة </Text>
+                    </View>
+                    <Customer />
+                    <Product />
+                    <Description />
+                </ViewShot>
+            </ScrollView>
         </View>
     )
 }
 const styles = StyleSheet.create({
-    detailContainer: {
-        paddingHorizontal: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+    invoice: {
         backgroundColor: color2,
         borderColor: color2,
         borderWidth: 1,
         borderRadius: 10,
-        paddingVertical: 10,
+        paddingVertical: 50,
+        marginBottom: 100,
+        paddingHorizontal: 15,
+    },
+    invoiceHeading: {
+        width: '50%',
+        alignSelf: 'center',
+        alignItems: 'center',
+    },
+    invoiceHeadingText: {
+        fontFamily: Bold,
+        color: color1
+    },
+    detailContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    customerInfoContEng: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    customerInfoContArabic: {
+        flexDirection: 'row-reverse',
+        alignItems: 'center',
     },
     customerDetailEng: {
-        width: Dimensions.get('window').width * .5,
-        paddingLeft: 5,
-        // flexDirection: 'row',
+        width: '50%',
         flexWrap: 'wrap',
         borderColor: color2
     },
     customerDetailArabic: {
-        width: Dimensions.get('window').width * .5,
-        paddingRight: 25,
+        width: '50%',
         justifyContent: 'flex-end',
         flexDirection: 'row',
         flexWrap: 'wrap',
@@ -175,21 +281,30 @@ const styles = StyleSheet.create({
     customerInfoText: {
         fontFamily: Semi_Bold,
         color: color1,
-        fontSize: 15
+        fontSize: 10
+    },
+    cusHeading: {
+        fontFamily: Semi_Bold,
+        color: color1,
+        fontSize: 13
+    },
+    cusText: {
+        fontFamily: Italic,
+        color: color1,
+        fontSize: 13
     },
     productContainer: {
         marginVertical: 10,
         backgroundColor: color2,
-        borderColor: color2,
+        borderColor: color1,
         borderWidth: 1,
-        paddingHorizontal: 5,
-        paddingVertical: 15,
+        marginVertical: 15,
         borderRadius: 10,
     },
     productTable: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderBottomWidth: 1
+        justifyContent: 'space-around',
+        paddingHorizontal: 5,
     },
     productItemName: {
         flex: 1,
@@ -197,74 +312,33 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: Semi_Bold,
         paddingVertical: 5,
+        fontSize: 10
     },
-    products: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderColor: color2,
-        padding: 20,
+    total: {
+        width: '100%',
+        borderTopWidth: 1,
     },
-    productItem: {
-        width: '80%',
-        flexDirection: 'row',
-        alignItems: 'center',
+    heading: {
+        fontFamily: Bold,
+        color: color1
     },
-    item: {
-        flex: 1,
-        alignItems: 'center',
+    desText: {
+        fontFamily: Italic,
+        color: color1,
+        fontSize: 13
     },
-    quantity: {
-        textAlign: 'center',
+    print: {
         position: 'absolute',
-        top: 0,
-        right: 0,
-        color: color2,
-        backgroundColor: color1,
-        paddingHorizontal: 2,
-        borderWidth: 1,
-        borderRadius: 10,
-        borderColor: color2,
+        bottom: 30,
+        right: 10,
+        padding: 10,
+        borderRadius: 100,
+        backgroundColor: color2
     },
-    description: {
-        paddingHorizontal: 10
+    printBtnText: {
+        fontFamily: Bold,
+        color: color1,
+        fontSize: 20
     }
 
 })
-
-// const invoiceProduct = (item, index) => {
-//     const check = item.productId === id;
-//     return (
-//         <View style={styles}>
-//             {check &&
-//                 <View>
-//                     <Text style={STYLE.text}>{item.product_name}</Text>
-//                 </View>
-//             }
-//         </View>
-//     )
-// }
-
-// <Text style={STYLE.text} >{customer.contact_person}</Text>
-// <FlatList
-//     data={products}
-//     keyExtractor={(item, index) => index.toString()}
-//     renderItem={({ item, index }) => invoiceProduct(item, index)}
-// />
-// <FlatList
-//     data={description}
-//     keyExtractor={(item, index) => index.toString()}
-//     renderItem={({ item }) => {
-//         const check = item.desId == id;
-//         console.log('des>', id, check ? item : '');
-//         return (
-//             <View>
-//                 {check &&
-//                     <View>
-//                         <Text style={STYLE.text}>{item.description_eng}</Text>
-//                         <Text style={STYLE.text}>{item.description_arabic}</Text>
-//                     </View>
-//                 }
-//             </View>
-//         )
-//     }}
-// />

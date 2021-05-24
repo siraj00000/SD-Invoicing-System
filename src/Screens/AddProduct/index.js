@@ -8,7 +8,6 @@ import { AddProduct } from '../../SqliteDatabase/Product';
 import { ScreenHeader } from '../../Component/Header';
 import { STYLE } from '../../Utils/Stylesheet/Style';
 
-
 export default function Addproduct({ navigation, route }) {
     const [productName, setProductName] = useState('');
     const [productWeight, setProductWeight] = useState('');

@@ -18,6 +18,7 @@ export default function ViewInvoices({ navigation, route }) {
     useEffect(() => {
         getInvoices()
     }, []);
+    console.log(getProduct);
     const getInvoices = async () => {
         const invoices = await getAllInvoices();
         const get = await getAllSelectedProducts();
@@ -37,35 +38,20 @@ export default function ViewInvoices({ navigation, route }) {
                 id: customerId
             })
         }
+
         return (
             <View key={customerId} style={styles.invoiceCard}>
-                <View style={styles.invoiceItem}>
-                    <Ionicons name='people-sharp' color={color1} size={25} />
-                    <Text style={styles.invoiceText}>{item.contact_person}</Text>
-                </View>
-                <FlatList
-                    horizontal
-                    data={getProduct}
-                    style={styles.list}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => {
-                        const check = Boolean(customerId == item.productId)
-                        return (
-                            <View key={item.customerId} >
-                                {check &&
-                                    <View style={styles.listItem}>
-                                        <FontAwesome5 name='box-open' color={color1} size={30} />
-                                        <Text style={styles.invoiceListText}>{item.product_name}</Text>
-                                    </View>
-                                }
-                            </View>
-                        )
-                    }}
-                />
-                <View style={[styles.invoiceItem, {padding: 10}]}>
-                    <Pressable style={styles.detailBtn} onPress={detailInvoice}>
-                        <Text style={styles.detailText}>Detail</Text>
-                    </Pressable>
+                <FontAwesome5 name='box-open' color={color2} size={50} />
+                <View style={styles.listItem}>
+                    <View>
+                        <Text style={styles.invoiceListText}>{`${item.contact_person} (${item.contact_person_arabic})`}</Text>
+                        <Text style={styles.invoiceListText}>{`${item.company_name} (${item.company_name_arabic})`}</Text>
+                    </View>
+                    <View style={styles.invoiceItem}>
+                        <Pressable style={styles.detailBtn} onPress={detailInvoice}>
+                            <Text style={styles.detailText}>Detail</Text>
+                        </Pressable>
+                    </View>
                 </View>
             </View>
         )
@@ -94,7 +80,50 @@ export default function ViewInvoices({ navigation, route }) {
     )
 }
 
+
 const styles = StyleSheet.create({
+    customerCard: {
+        flex: 1,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginVertical: 50
+    },
+    invoiceCard: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 10,
+    },
+    listItem: {
+        width: '80%',
+        paddingHorizontal: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    invoiceListText: {
+        fontFamily: Bold,
+        color: color2,
+        fontSize: 12
+    },
+    invoiceItem: {
+        borderWidth: 1,
+        borderColor: color2,
+        borderRadius: 10
+    },
+    detailBtn: {
+        backgroundColor: color1,
+        padding: 5,
+        borderRadius: 10
+    },
+    detailText: {
+        fontFamily: Semi_Bold,
+        color: color2,
+        fontSize: 15,
+        textAlign: 'center'
+    }
+})
+
+const sty = StyleSheet.create({
     customerCard: {
         flex: 1,
         paddingVertical: 20,

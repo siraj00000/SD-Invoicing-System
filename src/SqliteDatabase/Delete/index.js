@@ -1,4 +1,5 @@
 import { openDatabase } from 'react-native-sqlite-storage';
+import Status from '../../Utils/alert';
 var db = openDatabase({ name: 'tableSd.db' });
 
 const deleteCustomerFromInvoice = (customerId) => {
@@ -15,7 +16,7 @@ const deleteCustomerFromInvoice = (customerId) => {
                         { cancelable: false }
                     );
                 } else {
-                    alert('Please insert a valid customer');
+                    Alert.alert('Please insert a valid customer');
                 }
             }
         );
@@ -35,14 +36,14 @@ const deleteSelectedProductFromInvoice = (customerId) => {
                         { cancelable: false }
                     );
                 } else {
-                    alert('Please insert a valid customer');
+                    Alert.alert('Please insert a valid customer');
                 }
             }
         );
     });
 };
 
-export const deleteInvoice = (customerId)=>{
+export const deleteInvoice = (customerId) => {
     deleteCustomerFromInvoice(customerId);
     deleteSelectedProductFromInvoice(customerId);
 }
