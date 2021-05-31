@@ -4,7 +4,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { STYLE } from '../../Utils/Stylesheet/Style';
 import { ScreenHeader } from '../../Component/Header';
 import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { color2 } from '../../Themes/Color';
+import { color2, color3 } from '../../Themes/Color';
 
 
 export default function Customername({ navigation, route }) {
@@ -35,24 +35,24 @@ export default function Customername({ navigation, route }) {
             />
             <ScrollView style={STYLE.body}>
                 <View style={STYLE.cr_product}>
-                    <TextInput selectionColor={color2} placeholderTextColor={color2} placeholder='Contact person' value={contactPerson}
+                    <TextInput selectionColor={color3} placeholderTextColor={color3} placeholder='Contact person' value={contactPerson}
                         style={STYLE.TextInput} onChangeText={setContactPerson} />
-                    <Ionicons name='person' style={STYLE.icon} color={color2} size={40} />
+                    <Ionicons name='person' style={STYLE.icon} color={color3} size={40} />
                 </View>
                 <View style={STYLE.cr_product}>
-                    <TextInput selectionColor={color2} placeholderTextColor={color2} placeholder='Company name' value={companyName}
+                    <TextInput selectionColor={color3} placeholderTextColor={color3} placeholder='Company name' value={companyName}
                         style={STYLE.TextInput} onChangeText={setCompanyName} />
-                    <Entypo name='shop' style={STYLE.icon} color={color2} size={40} />
+                    <Entypo name='shop' style={STYLE.icon} color={color3} size={40} />
                 </View>
                 <View style={STYLE.cr_product}>
-                    <TextInput selectionColor={color2} placeholderTextColor={color2} placeholder='اسم' value={contactPersonArbic}
+                    <TextInput selectionColor={color3} placeholderTextColor={color3} placeholder='اسم' value={contactPersonArbic}
                         style={STYLE.TextInput} onChangeText={setContactPersonArabic} />
-                    <Ionicons name='person' style={STYLE.icon} color={color2} size={40} />
+                    <Ionicons name='person' style={STYLE.icon} color={color3} size={40} />
                 </View>
                 <View style={STYLE.cr_product}>
-                    <TextInput selectionColor={color2} placeholderTextColor={color2} placeholder='اسم الشركة' value={companyNameArabic}
+                    <TextInput selectionColor={color3} placeholderTextColor={color3} placeholder='اسم الشركة' value={companyNameArabic}
                         style={STYLE.TextInput} onChangeText={setCompanyNameArabic} />
-                    <Entypo name='shop' style={STYLE.icon} color={color2} size={40} />
+                    <Entypo name='shop' style={STYLE.icon} color={color3} size={40} />
                 </View>
                 <View style={STYLE.cr_product}>
                     <TouchableOpacity style={STYLE.btn} onPress={addCustomerName} >

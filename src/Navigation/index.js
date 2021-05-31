@@ -16,6 +16,7 @@ import TAX from '../Screens/Settings/TAX';
 import Customername from '../Screens/AddCustomer/CustomerName';
 import InvoiceCreate from '../Screens/CreateInvoices/AddInvoice';
 import Invoicedetail from '../Screens/ViewInvoices/invoiceDetail';
+import CustomDrawerContent from '../Component/CustomDrawerContent';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -36,14 +37,14 @@ const SD_Deshboard = () => {
                 ...TransitionPresets.ModalPresentationIOS,
             })}
         >
-            <Stack.Screen name='Deshboard' component={Deshboard} />
+            <Stack.Screen name='Home' component={Deshboard} />
             <Stack.Screen name='Add Product' component={Addproduct} />
             <Stack.Screen name='Add Customer' component={Addcustomer} />
             <Stack.Screen name='Customer name' component={Customername} />
             <Stack.Screen name='View Products' component={ViewProduct} />
             <Stack.Screen name='View Customers' component={ViewCustomers} />
-            <Stack.Screen name='Create Invoices' component={CreateInvoices} />            
-            <Stack.Screen name='Add Invoices' component={InvoiceCreate} />            
+            <Stack.Screen name='Create Invoices' component={CreateInvoices} />
+            <Stack.Screen name='Add Invoices' component={InvoiceCreate} />
             <Stack.Screen name='View Invoices' component={ViewInvoices} />
             <Stack.Screen name='Invoice Detail' component={Invoicedetail} />
             <Stack.Screen name='Setting Option' component={Settingoption} />
@@ -54,11 +55,22 @@ const SD_Deshboard = () => {
     )
 }
 
+const MyDrawer = () => {
+    return (
+        <Drawer.Navigator 
+            drawerContent={(props)=> <CustomDrawerContent {...props} />}
+        >
+            <Drawer.Screen name="Deshboard" component={SD_Deshboard} />
+        </Drawer.Navigator>
+    );
+};
+
+
 
 function AppNavigator() {
     return (
         <NavigationContainer >
-            <SD_Deshboard />
+            <MyDrawer />
         </NavigationContainer>
     );
 }

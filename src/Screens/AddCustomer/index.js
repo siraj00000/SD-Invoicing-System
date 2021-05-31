@@ -5,14 +5,12 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { View, TextInput, StatusBar, ScrollView, Text, TouchableOpacity, Alert } from 'react-native'
-import { color2, color1 } from '../../Themes/Color';
+import { color2, color1, color3 } from '../../Themes/Color';
 import { AddCustomer } from '../../SqliteDatabase/Customer';
 import { ScreenHeader } from '../../Component/Header';
 import { STYLE } from '../../Utils/Stylesheet/Style';
 
 export default function Addcustomer({ navigation, route }) {
-    // const [contactPerson, setContactPerson] = useState('');
-    // const [companyName, setCompanyName] = useState('');
     const [email, setEmail] = useState('');
     const [address, setAddress] = useState('');
     const [telephoneNumber, setTelephoneNumber] = useState('');
@@ -36,29 +34,29 @@ export default function Addcustomer({ navigation, route }) {
             />
             <ScrollView style={STYLE.body}>
                 <View style={STYLE.cr_product}>
-                    <TextInput selectionColor={color2} placeholderTextColor={color2} placeholder='Email' value={email}
+                    <TextInput selectionColor={color3} placeholderTextColor={color3} placeholder='Email' value={email}
                         style={STYLE.TextInput} onChangeText={setEmail} />
-                    <FontAwesome name='envelope' style={STYLE.icon} color={color2} size={40} />
+                    <FontAwesome name='envelope' style={STYLE.icon} color={color3} size={40} />
                 </View>
                 <View style={STYLE.cr_product}>
-                    <TextInput selectionColor={color2} placeholderTextColor={color2} placeholder='Address' value={address}
+                    <TextInput selectionColor={color3} placeholderTextColor={color3} placeholder='Address' value={address}
                         style={STYLE.TextInput} onChangeText={setAddress} />
-                    <Entypo name='address' style={STYLE.icon} color={color2} size={40} />
+                    <Entypo name='address' style={STYLE.icon} color={color3} size={40} />
                 </View>
                 <View style={STYLE.cr_product}>
-                    <TextInput keyboardType='number-pad' selectionColor={color2} placeholderTextColor={color2} placeholder='Telephone number' value={telephoneNumber}
+                    <TextInput keyboardType='number-pad' selectionColor={color3} placeholderTextColor={color3} placeholder='Telephone number' value={telephoneNumber}
                         style={STYLE.TextInput} onChangeText={setTelephoneNumber} />
-                    <FontAwesome5 name='phone-alt' style={STYLE.icon} color={color2} size={40} />
+                    <FontAwesome5 name='phone-alt' style={STYLE.icon} color={color3} size={40} />
                 </View>
                 <View style={STYLE.cr_product}>
-                    <TextInput keyboardType='number-pad' selectionColor={color2} placeholderTextColor={color2} placeholder='VAT number' value={VATNumber}
+                    <TextInput keyboardType='number-pad' selectionColor={color3} placeholderTextColor={color3} placeholder='VAT number' value={VATNumber}
                         style={STYLE.TextInput} onChangeText={setVATNumber} />
-                    <MaterialCommunityIcons name='finance' style={STYLE.icon} color={color2} size={40} />
+                    <MaterialCommunityIcons name='finance' style={STYLE.icon} color={color3} size={40} />
                 </View>
                 <View style={STYLE.cr_product}>
-                    <TextInput keyboardType='number-pad' selectionColor={color2} placeholderTextColor={color2} placeholder='CR number' value={CRNumber}
+                    <TextInput keyboardType='number-pad' selectionColor={color3} placeholderTextColor={color3} placeholder='CR number' value={CRNumber}
                         style={STYLE.TextInput} onChangeText={setCRNumber} />
-                    <FontAwesome5 name='credit-card' style={STYLE.icon} color={color2} size={40} />
+                    <FontAwesome5 name='credit-card' style={STYLE.icon} color={color3} size={40} />
                 </View>
                 <View style={STYLE.footer}>
                     <TouchableOpacity style={STYLE.btn} onPress={addCustomer} >

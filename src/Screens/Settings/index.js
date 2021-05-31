@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ScreenHeader } from '../../Component/Header';
 import { Dimensions, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { color1, color2 } from '../../Themes/Color';
+import { color1, color2, color3 } from '../../Themes/Color';
 import { Bold } from '../../Themes/FontFamily';
 import { STYLE } from '../../Utils/Stylesheet/Style';
 import { AddDefaultData } from '../../SqliteDatabase/DefaultData';
@@ -31,15 +31,15 @@ export default function Setting({ navigation, route }) {
             <ScrollView style={STYLE.body}>
                 <View style={styles.dataCont}>
                     <View style={STYLE.cr_product}>
-                        <TextInput placeholder='Currency Name' selectionColor={color2} placeholderTextColor={color2}
+                        <TextInput placeholder='Currency Name' selectionColor={color3} placeholderTextColor={color3}
                             value={currencyName} onChangeText={setCurrencyName} style={STYLE.TextInput} />
                     </View>
                     <View style={STYLE.cr_product}>
-                        <TextInput placeholder='Currency Symbol' selectionColor={color2} placeholderTextColor={color2}
+                        <TextInput placeholder='Currency Symbol' selectionColor={color3} placeholderTextColor={color3}
                             value={currencySymbol} onChangeText={setCurrencySymbol} style={STYLE.TextInput} />
                     </View>
                     <View style={STYLE.cr_product}>
-                        <TextInput placeholder='Symbol Location' selectionColor={color2} placeholderTextColor={color2}
+                        <TextInput placeholder='Symbol Location' selectionColor={color3} placeholderTextColor={color3}
                             value={symbolLocation} onChangeText={setSymbolLocation} style={STYLE.TextInput} />
                     </View>
                     <View style={STYLE.cr_product}>
@@ -49,11 +49,11 @@ export default function Setting({ navigation, route }) {
                     </View>
                     {dropdown && <View style={styles.vatList}>
                         <View style={STYLE.cr_product}>
-                            <TextInput placeholder='VAT Name' selectionColor={color2} placeholderTextColor={color2}
+                            <TextInput placeholder='VAT Name' selectionColor={color3} placeholderTextColor={color3}
                                 value={vatName} onChangeText={setvatName} style={STYLE.TextInput} />
                         </View>
                         <View style={STYLE.cr_product}>
-                            <TextInput placeholder='VAT Percentage' selectionColor={color2} placeholderTextColor={color2}
+                            <TextInput placeholder='VAT Percentage' selectionColor={color3} placeholderTextColor={color3}
                                 value={vatPer} onChangeText={setVatPer} style={STYLE.TextInput} />
                         </View>
                     </View>}

@@ -1,6 +1,6 @@
 import React from "react";
 import { Dimensions, StyleSheet } from "react-native";
-import { color1, color2 } from "../../Themes/Color";
+import { color1, color2, color3, color4 } from "../../Themes/Color";
 import { Bold } from "../../Themes/FontFamily";
 
 export const STYLE = StyleSheet.create({
@@ -9,10 +9,10 @@ export const STYLE = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
         resizeMode: 'cover',
-        backgroundColor: color1
+        backgroundColor: color2
     },
     body: {
-        paddingVertical: 20,
+        paddingVertical: 0,
     },    
     cr_product: {
         justifyContent: 'space-between',
@@ -25,16 +25,16 @@ export const STYLE = StyleSheet.create({
         width: '80%',
         paddingHorizontal: 20,
         paddingVertical: 10,
-        borderWidth: 1,
+        borderWidth: 2,
         borderLeftWidth: 0,
         borderTopRightRadius: 10,
         borderBottomRightRadius: 100,
-        borderColor: color2,
-        color: color2,
+        borderColor: color4,
+        color: color3,
         fontFamily: Bold,
     },
     text: {
-        color: color2,
+        color: color4,
         fontFamily: Bold,
     },
     footer: {
@@ -49,16 +49,16 @@ export const STYLE = StyleSheet.create({
         alignItems: 'center',
         width: Dimensions.get('window').width * .78,
         height: 50,
-        backgroundColor: color2,
+        backgroundColor: color3,
         borderWidth: 1,
         borderTopRightRadius: 10,
         borderBottomRightRadius: 100,
-        borderColor: color2,
+        borderColor: color3,
         paddingHorizontal: 20,
         paddingVertical: 10,
     },
     btnTxt: {
-        color: color1,
+        color: color4,
         fontSize: 20,
         fontFamily: Bold,
         textTransform: 'uppercase',

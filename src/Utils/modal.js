@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Dimensions } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { View, Alert, Pressable, Text, Modal } from 'react-native';
-import { color1, color2 } from '../Themes/Color';
+import { color1, color2, color3, color4 } from '../Themes/Color';
 import { Bold, Italic, Semi_Bold } from '../Themes/FontFamily';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
@@ -12,71 +12,7 @@ export default function ItemChanges({ open, onModalClose, item, addChangesValue 
     const [newWeight, setNewWeight] = useState(weightOld);
     const [newPrice, setNewPrice] = useState(priceOld);
     const [decimal, setDecimal] = useState(0);
-    // const changeWeight = (val) => {
-    //     if (val == +.1) {
-    //         let desc = decimal + val;
-    //         let value = Number(newWeight) + val;
-    //         let desPoint = parseFloat(desc.toFixed(1));
-    //         let newVal = parseFloat(value.toFixed(1));
-    //         console.log('value', newVal);
-    //         setDecimal(desPoint);
-    //         setNewWeight(newVal);
-    //     } else if (val == -.1) {
-    //         let desc = decimal + val;
-    //         let value = Number(newWeight) + val;
-    //         let desPoint = parseFloat(desc.toFixed(2));
-    //         let newVal = parseFloat(value.toFixed(2));
-    //         console.log('value', newVal);
-    //         setDecimal(desPoint);
-    //         setNewWeight(newVal);
-    //     }
-    // }
-    // const setValues = (val, q) => {
-    //     let forWeight = ((newWeight/q) * (q + val));
-    //     let calPrice = priceOld * (quantity + val);
-    //     let calWeight = (weightOld + decimal) * (quantity + val);
-    //     let price = parseFloat(calPrice).toFixed(0);
-    //     let weight = parseFloat(forWeight).toFixed(1);
-    //     console.log(
-    //         forWeight,calPrice,calWeight,price,weight
-    //     );
-    //     setNewPrice(price);
-    //     setNewWeight(weight);
-    // }
-    // const changeQuantity = (val) => {
-    //     if (weight === weightOld && price === priceOld) {
-    //         if (val == +1) {
-    //             setQuantity(quantity + val);
-    //             setValues(val, quantity);
-    //         } else if (val == -1) {
-    //             if (quantity > 1) {
-    //                 setQuantity(quantity + val);
-    //                 setValues(val, quantity);
-    //             }
-    //         }
-    //     } else if (weight !== weightOld && price !== priceOld) {
-    //         if (val == +1) {
-    //             setQuantity(quantity + val);
-    //             setValues(val, quantity);
-    //         } else if (val == -1) {
-    //             if (quantity > 1) {
-    //                 setQuantity(quantity + val);
-    //                 setValues(val, quantity);
-    //             }
-    //         }
-    //     }
-    // }
-    // const changePrice = (val) => {
-    //     if (val == +10) {
-    //         let v = Number(newPrice) + val;
-    //         let value = parseFloat(v.toFixed(1));
-    //         setNewPrice(value)
-    //     } else if (val == -10) {
-    //         let v = Number(newPrice) + val;
-    //         let value = parseFloat(v.toFixed(1));
-    //         setNewPrice(value)
-    //     }
-    // }
+
     const changeQuantity = (val) => {
         if (val == +1) {
             setQuantity(quantity + val);
@@ -97,22 +33,23 @@ export default function ItemChanges({ open, onModalClose, item, addChangesValue 
             };
         };
     };
-    const changePrice = (val) => { 
-        if(val == +10){
+    const changePrice = (val) => {
+        if (val == +1) {
             let price = parseFloat(Number(newPrice) + val).toFixed(0);
             setNewPrice(price);
         }
-        else if(val == -10){
+        else if (val == -1) {
             let price = parseFloat(Number(newPrice) + val).toFixed(0);
             setNewPrice(price);
         }
     }
+    const totalWeight = parseFloat(newWeight * quantity).toFixed(1)
     const doChanges = async () => {
         const obj = {
             id: id,
             price: newPrice * quantity,
             priceOld: newPrice,
-            weight: newWeight * quantity,
+            weight: totalWeight,
             weightOld: newWeight,
             quantity: quantity,
             name: name,
@@ -145,23 +82,47 @@ export default function ItemChanges({ open, onModalClose, item, addChangesValue 
                             <View style={styles.container}>
                                 <Text style={styles.itemHeading}>Quantity</Text>
                                 <View style={styles.changeSpec}>
-                                    <FontAwesome5 name='chevron-left' size={15} color={color1} onPress={() => changeQuantity(+1)} />
+                                    <FontAwesome5
+                                        name='chevron-left'
+                                        size={15}
+                                        color={color4}
+                                        style={styles.iconBtn}
+                                        onPress={() => changeQuantity(+1)}
+                                    />
                                     <Text style={styles.itemText}>{quantity || quan}</Text>
-                                    <FontAwesome5 name='chevron-right' size={15} color={color1} onPress={() => changeQuantity(-1)} />
+                                    <FontAwesome5
+                                        name='chevron-right'
+                                        size={15}
+                                        color={color4}
+                                        style={styles.iconBtn}
+                                        onPress={() => changeQuantity(-1)}
+                                    />
                                 </View>
                             </View>
                         </View>
                         <View style={styles.itemSpec}>
                             <View style={styles.container}>
                                 <Text style={styles.itemHeading}>Total Weight</Text>
-                                <Text style={styles.itemText}>{newWeight * quantity}</Text>
+                                <Text style={styles.itemText}>{totalWeight}</Text>
                             </View>
                             <View style={styles.container}>
                                 <Text style={styles.itemHeading}>Weight</Text>
                                 <View style={styles.changeSpec}>
-                                    <FontAwesome5 name='chevron-left' size={15} color={color1} onPress={() => changeWeight(+.1)} />
+                                    <FontAwesome5
+                                        name='chevron-left'
+                                        size={15}
+                                        color={color4}
+                                        style={styles.iconBtn}
+                                        onPress={() => changeWeight(+.1)}
+                                    />
                                     <Text style={styles.itemText}>{newWeight}</Text>
-                                    <FontAwesome5 name='chevron-right' size={15} color={color1} onPress={() => changeWeight(-.1)} />
+                                    <FontAwesome5
+                                        name='chevron-right'
+                                        size={15}
+                                        color={color4}
+                                        style={styles.iconBtn}
+                                        onPress={() => changeWeight(-.1)}
+                                    />
                                 </View>
                             </View>
                         </View>
@@ -173,57 +134,37 @@ export default function ItemChanges({ open, onModalClose, item, addChangesValue 
                             <View style={styles.container}>
                                 <Text style={styles.itemHeading}>Price</Text>
                                 <View style={styles.changeSpec}>
-                                    <FontAwesome5 name='chevron-left' size={15} color={color1} onPress={() => changePrice(+10)} />
+                                    <FontAwesome5
+                                        name='chevron-left'
+                                        size={15}
+                                        color={color4}
+                                        style={styles.iconBtn}
+                                        onPress={() => changePrice(+1)}
+                                    />
                                     <Text style={styles.itemText}>{newPrice}</Text>
-                                    <FontAwesome5 name='chevron-right' size={15} color={color1} onPress={() => changePrice(-10)} />
+                                    <FontAwesome5
+                                        name='chevron-right'
+                                        size={15}
+                                        color={color4}
+                                        style={styles.iconBtn}
+                                        onPress={() => changePrice(-1)}
+                                    />
                                 </View>
                             </View>
                         </View>
-                        <View style={[styles.itemSpec, { alignSelf: 'center', marginTop: '10%' }]} >
+                        <View
+                            style={[
+                                styles.itemSpec,
+                                {
+                                    alignSelf: 'center',
+                                    marginTop: '10%'
+                                }
+                            ]} >
                             <Pressable style={styles.btn} onPress={doChanges}>
                                 <Text style={styles.btnText}>Done</Text>
                             </Pressable>
                         </View>
                     </View>
-                    {/* <View style={styles.modalItem}>
-                        <View style={styles.itemSpec} >
-                            <Text style={styles.itemHeading}>Product name</Text>
-                            <Text style={styles.itemText}>{name}</Text>
-                        </View>
-                        <View style={styles.itemSpec} >
-                            <Text style={styles.itemHeading}>Weight</Text>
-                            <View style={styles.itemQuantity}>
-                                <FontAwesome5 name='chevron-left' size={20} color={color1} />
-                                <Text style={styles.itemText}>{newWeight}kg</Text>
-                                <FontAwesome5 name='chevron-right' size={20} color={color1} />
-                            </View>
-                        </View>
-                        <View style={styles.itemSpec} >
-                            <Text style={styles.itemHeading}>Quantity</Text>
-                            <View style={styles.itemQuantity}>
-                                <FontAwesome5 name='chevron-left' size={20} color={color1} onPress={() => changeQuantity(+1)} />
-                                <Text style={styles.itemText}>{quantity || quan}</Text>
-                                <FontAwesome5 name='chevron-right' size={20} color={color1} onPress={() => changeQuantity(-1)} />
-                            </View>
-                        </View>
-                        <View style={styles.itemSpec} >
-                            <Text style={styles.itemHeading}>Price</Text>
-                            <View style={styles.itemQuantity}>
-                                <FontAwesome5 name='chevron-left' size={20} color={color1} />
-                                <Text style={styles.itemText}>${newPrice}</Text>
-                                <FontAwesome5 name='chevron-right' size={20} color={color1} />
-                            </View>
-                        </View>
-                        <View style={styles.itemSpec} >
-                            <Text style={styles.itemHeading}>Price</Text>
-                            <Text style={styles.itemText}>${newPrice}</Text>
-                        </View>
-                        <View style={styles.itemSpec} >
-                            <Pressable style={styles.btn} onPress={doChanges}>
-                                <Text style={styles.btnText}>Done</Text>
-                            </Pressable>
-                        </View> 
-                    </View>*/}
                 </View>
             </View>
         </Modal>
@@ -233,22 +174,24 @@ export default function ItemChanges({ open, onModalClose, item, addChangesValue 
 const styles = StyleSheet.create({
     centeredView: {
         flex: 1,
-        width: Dimensions.get('window').width * .8,
+        width: Dimensions.get('window').width,
         justifyContent: 'center',
-        alignSelf: 'center',
+        backgroundColor: 'rgba(52, 52, 52, 0.8)',
     },
     modalView: {
+        alignSelf: 'center',
         backgroundColor: color2,
         height: Dimensions.get('window').width,
-        width: '100%',
+        width: Dimensions.get('window').width * .8,
         alignItems: 'center',
-        borderWidth: 1,
-        borderColor: color2,
+        borderWidth: 3,
+        borderColor: color4,
+        backgroundColor: color2,
         borderRadius: 20,
         padding: 10,
     },
     modalText: {
-        color: color1,
+        color: color3,
         fontFamily: Bold,
         fontSize: 25
     },
@@ -256,13 +199,13 @@ const styles = StyleSheet.create({
         flex: .1,
     },
     btn: {
-        backgroundColor: color1,
+        backgroundColor: color3,
         width: Dimensions.get('window').width * .5,
         borderRadius: 10,
         padding: 10,
     },
     btnText: {
-        color: color2,
+        color: color4,
         fontFamily: Bold,
         textAlign: 'center',
         fontSize: 20
@@ -286,7 +229,7 @@ const styles = StyleSheet.create({
     itemHeading: {
         fontFamily: Semi_Bold,
         fontSize: 18,
-        color: color1
+        color: color4
     },
     changeSpec: {
         flexDirection: 'row',
@@ -294,9 +237,18 @@ const styles = StyleSheet.create({
         marginTop: 5,
         width: '80%'
     },
+    iconBtn: {
+        borderWidth: 1,
+        width: 20,
+        textAlign: 'center',
+        paddingTop: 2,
+        backgroundColor: color3,
+        borderColor: color3,
+        borderRadius: 5
+    },
     itemText: {
         fontFamily: Italic,
-        color: color1,
+        color: color3,
         fontSize: 15
     }
 });

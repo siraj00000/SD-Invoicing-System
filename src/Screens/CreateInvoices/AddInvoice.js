@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { color2, color1 } from '../../Themes/Color';
+import { color2, color1, color3 } from '../../Themes/Color';
 import { Bold } from '../../Themes/FontFamily';
 import { ScreenHeader } from '../../Component/Header';
 import { STYLE } from '../../Utils/Stylesheet/Style';
@@ -70,11 +70,11 @@ export default function InvoiceCreate({ navigation, route }) {
             />
             <View style={STYLE.body}>
                 <View style={STYLE.cr_product}>
-                    <TextInput selectionColor={color2} placeholderTextColor={color2} placeholder='Discription' value={descriptionEng}
+                    <TextInput selectionColor={color3} placeholderTextColor={color3} placeholder='Discription' value={descriptionEng}
                         style={STYLE.TextInput} onChangeText={setDescriptionEng} />
                 </View>
                 <View style={STYLE.cr_product}>
-                    <TextInput selectionColor={color2} placeholderTextColor={color2} placeholder='وصف' value={descriptionArabic}
+                    <TextInput selectionColor={color3} placeholderTextColor={color3} placeholder='وصف' value={descriptionArabic}
                         style={STYLE.TextInput} onChangeText={setDescriptionArabic} />
                 </View>
                 <View style={STYLE.cr_product}>

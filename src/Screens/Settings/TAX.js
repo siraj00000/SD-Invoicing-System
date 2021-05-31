@@ -6,7 +6,7 @@ import { Checkbox } from 'react-native-paper';
 import { ScreenHeader } from '../../Component/Header';
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { STYLE } from '../../Utils/Stylesheet/Style'
-import { color2 } from '../../Themes/Color';
+import { color2, color3, color4 } from '../../Themes/Color';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Bold } from '../../Themes/FontFamily';
 import { addTaxInfo } from '../../SqliteDatabase/DefaultData';
@@ -34,7 +34,7 @@ export default function TAX({ navigation, route }) {
             <ScrollView style={STYLE.body}>
                 <View>
                     <View style={STYLE.cr_product}>
-                        <TextInput selectionColor={color2} placeholderTextColor={color2} placeholder='Tax Name'
+                        <TextInput selectionColor={color3} placeholderTextColor={color3} placeholder='Tax Name'
                             style={STYLE.TextInput} value={taxName} onChangeText={setTaxName} />
                         <MaterialIcons name='drive-file-rename-outline' style={STYLE.icon} color={color2} size={40} />
                     </View>
@@ -47,8 +47,8 @@ export default function TAX({ navigation, route }) {
                             <View style={styles.checkbox}>
                                 <Checkbox
                                     status={taxType === 'Amount' ? 'checked' : 'unchecked'}
-                                    color="#fff"
-                                    uncheckedColor='#fff'
+                                    color={color4}
+                                    uncheckedColor={color3}
                                     onPress={() => {
                                         setChecked(!checked);
                                         setTaxType('Amount');
@@ -59,8 +59,8 @@ export default function TAX({ navigation, route }) {
                             <View style={styles.checkbox}>
                                 <Checkbox
                                     status={taxType === 'Percent' ? 'checked' : 'unchecked'}
-                                    color="#fff"
-                                    uncheckedColor='#fff'
+                                    color={color4}
+                                    uncheckedColor={color3}
                                     onPress={() => {
                                         setChecked(!checked);
                                         setTaxType('Percent');
@@ -70,7 +70,7 @@ export default function TAX({ navigation, route }) {
                             </View>
                         </View>}
                     <View style={STYLE.cr_product}>
-                        <TextInput selectionColor={color2} placeholderTextColor={color2} placeholder='Ratio'
+                        <TextInput selectionColor={color3} placeholderTextColor={color3} placeholder='Ratio'
                             style={STYLE.TextInput} value={ratio} onChangeText={setRatio} />
                         <MaterialIcons name='aspect-ratio' style={STYLE.icon} color={color2} size={40} />
                     </View>
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     type: {
-        color: color2,
+        color: color4,
         fontFamily: Bold
     }
 })

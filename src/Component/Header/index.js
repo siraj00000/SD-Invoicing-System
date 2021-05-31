@@ -2,17 +2,26 @@ import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet, Text, View } from 'react-native';
-import { color1, color2 } from '../../Themes/Color';
+import { color1, color2, color3, color4 } from '../../Themes/Color';
 import { Bold } from '../../Themes/FontFamily';
+import { Image } from 'react-native';
+import { PixelRatio } from 'react-native';
 
-export const DeshboardHeader = ({ icon, Title }) => {
+export const DeshboardHeader = ({ icon, Title, navigation }) => {
     return (
         <View style={styles.headerContainer}>
             <View style={styles.header}>
-                <MaterialCommunityIcons name='menu' color={color1} size={40} />
+                <Image source={require('../../Assest/Logo.jpeg')} style={styles.Image} />
+                <MaterialCommunityIcons
+                    name='menu'
+                    color={color4}
+                    style={styles.icon}
+                    size={35} 
+                    onPress={() => navigation.toggleDrawer()}
+                />
             </View>
             <View style={styles.logo}>
-                <Ionicons name={icon} color={color1} size={30} />
+                <Ionicons name={icon} color={color3} size={35} />
                 <Text style={styles.title}>{Title}</Text>
             </View>
         </View>
@@ -25,13 +34,21 @@ export const ScreenHeader = ({ navigation, icon, Iconbar, Title, size }) => {
             <View style={stylePages.header}>
                 <MaterialCommunityIcons
                     name='keyboard-backspace'
-                    color={color1} size={40}
+                    color={color4} size={35}
                     onPress={() => navigation.goBack()}
+                    style={stylePages.icon}
                 />
-                <MaterialCommunityIcons name='menu' color={color1} size={40} />
+                <Image source={require('../../Assest/Logo.jpeg')} style={styles.Image} />
+                <MaterialCommunityIcons
+                    name='menu'
+                    color={color4}
+                    size={35}
+                    onPress={() => navigation.toggleDrawer()}
+                    style={stylePages.icon}
+                />
             </View>
             <View style={stylePages.logo}>
-                <Iconbar name={icon} color={color1} size={size} />
+                <Iconbar name={icon} color={color3} size={size}/>
                 <Text style={stylePages.title}>{Title}</Text>
             </View>
         </View>
@@ -40,29 +57,45 @@ export const ScreenHeader = ({ navigation, icon, Iconbar, Title, size }) => {
 
 const styles = StyleSheet.create({
     headerContainer: {
-        height: 180,
+        height: 150,
         borderColor: '#fff',
         backgroundColor: color2,
         borderBottomRightRadius: 50,
         borderBottomLeftRadius: 50,
-        marginBottom: 10
+        marginBottom: 5,
     },
     header: {
-        height: 50,
-        justifyContent: 'flex-end',
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
         flexDirection: 'row',
-        paddingVertical: 10,
+        paddingTop: 10,
         paddingHorizontal: 15,
     },
+    Image: {
+        width: 80,
+        height: 50,
+        resizeMode: 'cover'
+    },
     logo: {
-        flex: 3,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        padding: 10,
+        borderWidth: 0
+    },
+    icon: {
+        borderWidth: 1,
+        paddingTop: 8,
+        textAlign: 'center',
+        backgroundColor: color3,
+        borderColor: color3,
+        height: 50,
+        width: 50,
+        borderRadius: 50 / PixelRatio.get(),
     },
     title: {
-        color: color1,
+        color: color4,
         fontSize: 30,
         fontFamily: Bold,
         textTransform: 'uppercase',
@@ -72,27 +105,37 @@ const styles = StyleSheet.create({
 
 const stylePages = StyleSheet.create({
     headerContainer: {
-        height: 150,
-        borderColor: '#fff',
-        borderBottomRightRadius: 100,
+        height: 120,
         backgroundColor: color2,
-        marginBottom: 10
+        marginBottom: 10,
     },
     header: {
-        height: 50,
+        flex: 2,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        paddingVertical: 10,
+        paddingTop: 20,
         paddingHorizontal: 15,
     },
     logo: {
-        flex: 3,
+        flex: 1,
         alignItems: 'center',
         flexDirection: 'row',
-        padding: 20,
+        justifyContent: 'center',
+        paddingHorizontal: 20,
+    },
+    icon: {
+        borderWidth: 1,
+        paddingTop: 8,
+        marginVertical: 0,
+        textAlign: 'center',
+        backgroundColor: color3,
+        borderColor: color3,
+        height: 50,
+        width: 50,
+        borderRadius: 50 / PixelRatio.get(),        
     },
     title: {
-        color: color1,
+        color: color4,
         fontSize: 20,
         fontFamily: Bold,
         textTransform: 'uppercase',

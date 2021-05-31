@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import RNPrint from 'react-native-print';
+
 import ViewShot from "react-native-view-shot";
 import { ScreenHeader } from '../../Component/Header'
-import { color1, color2 } from '../../Themes/Color';
+import { color1, color2, color3, color4 } from '../../Themes/Color';
 import { Bold, Italic, Semi_Bold } from '../../Themes/FontFamily';
 import { STYLE } from '../../Utils/Stylesheet/Style'
 import { ScrollView, Button, Text, View, StyleSheet, Share, Pressable } from 'react-native';
+import { parse } from '@babel/core';
 
 
 export default function Invoicedetail({ navigation, route }) {
@@ -17,7 +17,7 @@ export default function Invoicedetail({ navigation, route }) {
     const [totalPrice, setTotalPrice] = useState([]);
     const [weight, setWeight] = useState([]);
     const [price, setPrice] = useState([]);
-    const viewShotRef = useRef();
+    const viewShotRef = useRef()
     useEffect(() => {
         let tq = [...totalQuantity];
         let tw = [...totalWeight];
@@ -40,12 +40,6 @@ export default function Invoicedetail({ navigation, route }) {
             }
         }
     }, []);
-    // useEffect(() => {
-    //     setInterval(() => {
-    //         screenShot()
-    //     }, 3000);
-    // }, []);
-
     const {
         contact_person: customerName,
         contact_person_arabic: customerNameArabic,
@@ -118,16 +112,16 @@ export default function Invoicedetail({ navigation, route }) {
         )
     }
     const Product = () => {
-        const W = weight.reduce((a, b) => a + b, 0)
-        const P = price.reduce((a, b) => a + b, 0)
-        const totalQuan = totalQuantity.reduce((a, b) => a + b, 0)
-        const totalW = totalWeight.reduce((a, b) => a + b, 0)
-        const totalP = totalPrice.reduce((a, b) => a + b, 0)
+        const W = parseFloat( weight.reduce((a, b) => a + b, 0)).toFixed(1)
+        const P = parseFloat(price.reduce((a, b) => a + b, 0)).toFixed(1)
+        const totalQuan = parseFloat(totalQuantity.reduce((a, b) => a + b, 0)).toFixed(1)
+        const totalW = parseFloat(totalWeight.reduce((a, b) => a + b, 0)).toFixed(1)
+        const totalP = parseFloat(totalPrice.reduce((a, b) => a + b, 0)).toFixed(1)
         return (
             <React.Fragment>
                 <Text style={[styles.heading, { marginTop: 10 }]}>Products: </Text>
                 <View style={styles.productContainer}>
-                    <View style={[styles.productTable, { borderBottomWidth: 1, borderColor: color1 }]}>
+                    <View style={[styles.productTable, { borderBottomWidth: 2, borderColor: color4 }]}>
                         <Text style={styles.productItemName}>Name</Text>
                         <Text style={styles.productItemName}>W</Text>
                         <Text style={styles.productItemName}>P</Text>
@@ -206,7 +200,7 @@ export default function Invoicedetail({ navigation, route }) {
     return (
         <View style={STYLE.section}>
             <ScreenHeader
-                Title={route.name}
+                Title={'VAT Invoice'}
                 icon={'file-document'}
                 Iconbar={MaterialCommunityIcons}
                 size={40}
@@ -248,7 +242,7 @@ const styles = StyleSheet.create({
     },
     invoiceHeadingText: {
         fontFamily: Bold,
-        color: color1
+        color: color4
     },
     detailContainer: {
         flexDirection: 'row',
@@ -280,24 +274,24 @@ const styles = StyleSheet.create({
     },
     customerInfoText: {
         fontFamily: Semi_Bold,
-        color: color1,
+        color: color4,
         fontSize: 10
     },
     cusHeading: {
         fontFamily: Semi_Bold,
-        color: color1,
+        color: color4,
         fontSize: 13
     },
     cusText: {
         fontFamily: Italic,
-        color: color1,
+        color: color3,
         fontSize: 13
     },
     productContainer: {
         marginVertical: 10,
         backgroundColor: color2,
-        borderColor: color1,
-        borderWidth: 1,
+        borderColor: color4,
+        borderWidth: 3,
         marginVertical: 15,
         borderRadius: 10,
     },
@@ -308,7 +302,7 @@ const styles = StyleSheet.create({
     },
     productItemName: {
         flex: 1,
-        color: color1,
+        color: color3,
         textAlign: 'center',
         fontFamily: Semi_Bold,
         paddingVertical: 5,
@@ -316,15 +310,16 @@ const styles = StyleSheet.create({
     },
     total: {
         width: '100%',
-        borderTopWidth: 1,
+        borderTopWidth: 2,
+        borderTopColor: color4
     },
     heading: {
         fontFamily: Bold,
-        color: color1
+        color: color4
     },
     desText: {
         fontFamily: Italic,
-        color: color1,
+        color: color3,
         fontSize: 13
     },
     print: {
@@ -333,11 +328,11 @@ const styles = StyleSheet.create({
         right: 10,
         padding: 10,
         borderRadius: 100,
-        backgroundColor: color2
+        backgroundColor: color3
     },
     printBtnText: {
         fontFamily: Bold,
-        color: color1,
+        color: color4,
         fontSize: 20
     }
 

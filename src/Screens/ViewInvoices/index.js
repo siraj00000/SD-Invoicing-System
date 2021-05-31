@@ -4,7 +4,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet, View, TextInput, Dimensions, StatusBar, ScrollView, Text, TouchableOpacity, Alert, FlatList, Button } from 'react-native'
-import { color2, color1 } from '../../Themes/Color';
+import { color2, color1, color3, color4 } from '../../Themes/Color';
 import { getAllInvoices, getAllProductDes, getAllSelectedProducts } from '../../SqliteDatabase/Invoices';
 import { ScreenHeader } from '../../Component/Header';
 import { STYLE } from '../../Utils/Stylesheet/Style';
@@ -18,7 +18,6 @@ export default function ViewInvoices({ navigation, route }) {
     useEffect(() => {
         getInvoices()
     }, []);
-    console.log(getProduct);
     const getInvoices = async () => {
         const invoices = await getAllInvoices();
         const get = await getAllSelectedProducts();
@@ -27,7 +26,6 @@ export default function ViewInvoices({ navigation, route }) {
         setGetProduct(get);
         setDescription(des);
     }
-
     const invoiceList = (item) => {
         let { customerId } = item;
         const detailInvoice = () => {
@@ -38,12 +36,11 @@ export default function ViewInvoices({ navigation, route }) {
                 id: customerId
             })
         }
-
         return (
             <View key={customerId} style={styles.invoiceCard}>
-                <FontAwesome5 name='box-open' color={color2} size={50} />
+                <FontAwesome5 name='box-open' color={color3} size={40} />
                 <View style={styles.listItem}>
-                    <View>
+                    <View style={styles.invoiceCustomerInfo}>
                         <Text style={styles.invoiceListText}>{`${item.contact_person} (${item.contact_person_arabic})`}</Text>
                         <Text style={styles.invoiceListText}>{`${item.company_name} (${item.company_name_arabic})`}</Text>
                     </View>
@@ -89,9 +86,14 @@ const styles = StyleSheet.create({
         marginVertical: 50
     },
     invoiceCard: {
+        borderWidth: 3,
+        borderRadius: 10,
+        borderColor: color4,
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingVertical: 10,
+        marginVertical: 5,
+        paddingHorizontal: 5
     },
     listItem: {
         width: '80%',
@@ -102,79 +104,29 @@ const styles = StyleSheet.create({
     },
     invoiceListText: {
         fontFamily: Bold,
-        color: color2,
-        fontSize: 12
+        color: color4,
+        fontSize: 12,
+        flexWrap: 'wrap'
+    },
+    invoiceCustomerInfo: {
+        flex: 2,
     },
     invoiceItem: {
+        flex: .9,
         borderWidth: 1,
         borderColor: color2,
         borderRadius: 10
     },
     detailBtn: {
-        backgroundColor: color1,
+        backgroundColor: color3,
         padding: 5,
         borderRadius: 10
     },
     detailText: {
         fontFamily: Semi_Bold,
-        color: color2,
+        color: color4,
         fontSize: 15,
         textAlign: 'center'
     }
 })
 
-const sty = StyleSheet.create({
-    customerCard: {
-        flex: 1,
-        paddingVertical: 20,
-    },
-    invoiceCard: {
-        width: '100%',
-        height: 80,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: color2,
-        borderWidth: 2,
-        borderBottomRightRadius: 50,
-        borderColor: color2,
-        marginVertical: 10,
-        paddingHorizontal: 5
-    },
-    invoiceItem: {
-        width: '20%',
-        alignItems: 'center',
-        paddingVertical: 10,
-        marginVertical: 5,
-        marginRight: 10,
-        borderColor: color1,
-        zIndex: 1
-    },
-    invoiceText: {
-        width: '100%',
-        color: color1,
-        fontFamily: 'Montserrat-Bold',
-        textAlign: 'center'
-    },
-    list: {
-        width: '60%',
-    },
-    listItem: {
-        margin: 5,
-        alignItems: 'center',
-    },
-    invoiceListText: {
-        color: color1,
-        fontFamily: 'Montserrat-Bold',
-    },
-    detailBtn: {
-        backgroundColor: color1,
-        padding: 5,
-        borderRadius: 10
-    },
-    detailText: {
-        fontFamily: Semi_Bold,
-        color: color2,
-        fontSize: 12,
-        textAlign: 'center'
-    }
-})

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { DeshboardHeader } from '../../Component/Header'
+import { Options } from '../../Component/Options';
 import { Pages } from '../../Component/Pages'
 import { createTableForCurrency, createTableForTax } from '../../SqliteDatabase/DefaultData';
 import { STYLE } from '../../Utils/Stylesheet/Style'
@@ -17,7 +18,7 @@ export default function Settingoption({ navigation }) {
             <DeshboardHeader icon={'settings'} Title={'Setting'} />
             <ScrollView style={STYLE.body} >
                 <View style={styles.settingOption}>
-                    <Pages
+                    <Options
                         routeName={'Currency'}
                         Title={'Currency'}
                         Iconbar={MaterialCommunityIcons}
@@ -25,7 +26,7 @@ export default function Settingoption({ navigation }) {
                         size={40}
                         nav={navigation}
                     />
-                    <Pages
+                    <Options
                         routeName={'TAX'}
                         Title={'TAX'}
                         Iconbar={MaterialCommunityIcons}

@@ -3,7 +3,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { View, TextInput, StatusBar, ScrollView, Text, TouchableOpacity } from 'react-native';
-import { color2, color1 } from '../../Themes/Color';
+import { color4, color1, color3 } from '../../Themes/Color';
 import { AddProduct } from '../../SqliteDatabase/Product';
 import { ScreenHeader } from '../../Component/Header';
 import { STYLE } from '../../Utils/Stylesheet/Style';
@@ -25,29 +25,29 @@ export default function Addproduct({ navigation, route }) {
             <ScreenHeader navigation={navigation} icon={'box-open'} Iconbar={FontAwesome5} size={30} Title={route.name} />
             <ScrollView style={STYLE.body}>
                 <View style={STYLE.cr_product}>
-                    <TextInput selectionColor={color2} placeholderTextColor={color2} placeholder='Product name' value={productName}
+                    <TextInput selectionColor={color3} placeholderTextColor={color3} placeholder='Product name' value={productName}
                         style={STYLE.TextInput} onChangeText={setProductName} />
-                    <FontAwesome5 name='box-open' style={STYLE.icon} color={color2} size={30} />
+                    <FontAwesome5 name='box-open' style={STYLE.icon} color={color3} size={30} />
                 </View>
                 <View style={STYLE.cr_product}>
-                    <TextInput keyboardType='number-pad' selectionColor={color2} placeholderTextColor={color2} placeholder='Weight (kg)' value={productWeight}
+                    <TextInput keyboardType='number-pad' selectionColor={color3} placeholderTextColor={color3} placeholder='Weight (kg)' value={productWeight}
                         style={STYLE.TextInput} onChangeText={setProductWeight} />
-                    <MaterialCommunityIcons name='weight-kilogram' style={STYLE.icon} color={color2} size={40} />
+                    <MaterialCommunityIcons name='weight-kilogram' style={STYLE.icon} color={color3} size={40} />
                 </View>
                 <View style={STYLE.cr_product}>
-                    <TextInput keyboardType='number-pad' selectionColor={color2} placeholderTextColor={color2} placeholder='quantity' value={quantity}
+                    <TextInput keyboardType='number-pad' selectionColor={color3} placeholderTextColor={color3} placeholder='quantity' value={quantity}
                         style={STYLE.TextInput} onChangeText={setQuantity} />
-                    <FontAwesome5 name='boxes' style={STYLE.icon} color={color2} size={40} />
+                    <FontAwesome5 name='boxes' style={STYLE.icon} color={color3} size={40} />
                 </View>
                 <View style={STYLE.cr_product}>
-                    <TextInput keyboardType='number-pad' selectionColor={color2} placeholderTextColor={color2} placeholder='Unit price ($)' value={productPrice}
+                    <TextInput keyboardType='number-pad' selectionColor={color3} placeholderTextColor={color3} placeholder='Unit price ($)' value={productPrice}
                         style={STYLE.TextInput} onChangeText={setProductPrice} />
-                    <Entypo name='price-tag' style={STYLE.icon} color={color2} size={40} />
+                    <Entypo name='price-tag' style={STYLE.icon} color={color3} size={40} />
                 </View>
                 <View style={STYLE.cr_product}>
-                    <TextInput keyboardType='number-pad' selectionColor={color2} placeholderTextColor={color2} placeholder='Unit cost ($)' value={productCost}
+                    <TextInput keyboardType='number-pad' selectionColor={color3} placeholderTextColor={color3} placeholder='Unit cost ($)' value={productCost}
                         style={STYLE.TextInput} onChangeText={setProductCost} />
-                    <FontAwesome5 name='dollar-sign' style={STYLE.icon} color={color2} size={40} />
+                    <FontAwesome5 name='dollar-sign' style={STYLE.icon} color={color3} size={40} />
                 </View>
                 <View style={STYLE.footer}>
                     <TouchableOpacity style={STYLE.btn} onPress={addProduct} >
