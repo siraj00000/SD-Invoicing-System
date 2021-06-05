@@ -15,7 +15,11 @@ export default function Settingoption({ navigation }) {
 
     return (
         <View style={STYLE.section}>
-            <DeshboardHeader icon={'settings'} Title={'Setting'} />
+            <DeshboardHeader 
+                icon={'settings'} 
+                Title={'Setting'} 
+                navigation={navigation}
+            />
             <ScrollView style={STYLE.body} >
                 <View style={styles.settingOption}>
                     <Options
